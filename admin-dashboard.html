@@ -5,215 +5,326 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin Dashboard — VaishyaVaniParivar.com</title>
 <style>
-  :root{ --maroon:#7a1f2b; --maroon-deep:#4a1118; --gold:#c9952f; --cream:#fbf6ec; }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; background:var(--cream); color:#241712; }
-
-  header{
-    background:var(--maroon-deep);
-    color:#fff;
-    padding:16px 24px;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-  }
-  header h1{ font-size:1.05rem; }
-  header .who{ font-size:0.82rem; opacity:0.85; }
-  header button{
-    background:rgba(255,255,255,0.12);
-    color:#fff;
-    border:none;
-    padding:7px 16px;
-    border-radius:20px;
-    font-size:0.78rem;
-    cursor:pointer;
-  }
-
-  .tabs{ display:flex; gap:8px; padding:18px 24px 0; max-width:1000px; margin:0 auto; }
-  .tab{
-    padding:9px 18px;
-    border-radius:20px;
-    background:#fff;
-    border:1px solid #e8dcc4;
-    font-size:0.85rem;
-    font-weight:600;
-    cursor:pointer;
-    color:#5b4a3f;
-  }
-  .tab.active{ background:var(--maroon); color:#fff; border-color:var(--maroon); }
-
-  main{ max-width:1000px; margin:0 auto; padding:20px 24px 60px; }
-
-  .item{
-    background:#fff;
-    border:1px solid #e8dcc4;
-    border-radius:14px;
-    padding:16px;
-    margin-bottom:14px;
-    display:flex;
-    gap:16px;
-    align-items:flex-start;
-  }
-  .item img{ width:70px; height:70px; border-radius:10px; object-fit:cover; flex-shrink:0; background:#eee; }
-  .item .info{ flex:1; }
-  .item h3{ font-size:0.98rem; color:var(--maroon-deep); }
-  .item p{ font-size:0.82rem; color:#5b4a3f; margin-top:3px; line-height:1.5; }
-  .item .actions{ display:flex; gap:8px; margin-top:10px; }
-  .item .actions button{
-    border:none;
-    padding:7px 16px;
-    border-radius:18px;
-    font-size:0.78rem;
-    font-weight:700;
-    cursor:pointer;
-  }
-  .approve-btn{ background:#1f4d2b; color:#fff; }
-  .reject-btn{ background:#a32020; color:#fff; }
-
-  .empty{ text-align:center; color:#7a695c; padding:50px 20px; font-size:0.9rem; }
-  .loading{ text-align:center; color:#7a695c; padding:50px 20px; }
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--maroon-mid:#8b2635;--gold:#c9922a;--gold-light:#e8c46a;--gold-pale:#f5e6b8;--cream:#faf5eb;--ink:#1a0e09;--ink-soft:#5c4033;--green:#1f5c35;--red:#a32020;--line:rgba(201,146,42,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#f4f0e8;color:var(--ink);display:flex;min-height:100vh;}
+.sidebar{width:220px;flex-shrink:0;background:var(--maroon-deep);color:#fff;display:flex;flex-direction:column;position:fixed;top:0;left:0;bottom:0;z-index:50;overflow-y:auto;}
+.sidebar-brand{padding:20px 18px 16px;border-bottom:1px solid rgba(255,255,255,0.08);}
+.sidebar-brand h1{font-size:0.9rem;color:var(--gold-light);line-height:1.3;}
+.sidebar-brand p{font-size:0.7rem;color:rgba(255,255,255,0.45);margin-top:3px;}
+.sidebar-who{padding:12px 18px;font-size:0.72rem;color:rgba(255,255,255,0.5);border-bottom:1px solid rgba(255,255,255,0.06);}
+.nav-group{padding:14px 10px 6px;}
+.nav-group-label{font-size:0.62rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.35);padding:0 8px;margin-bottom:6px;}
+.nav-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:8px;font-size:0.82rem;color:rgba(255,255,255,0.7);cursor:pointer;transition:all 0.15s ease;text-decoration:none;margin-bottom:2px;}
+.nav-item:hover{background:rgba(255,255,255,0.08);color:#fff;}
+.nav-item.active{background:var(--maroon-mid);color:#fff;}
+.nav-item .ic{font-size:1rem;width:20px;text-align:center;}
+.sidebar-footer{margin-top:auto;padding:14px 18px;border-top:1px solid rgba(255,255,255,0.06);}
+.logout-btn{width:100%;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.7);border:none;padding:9px;border-radius:8px;font-size:0.8rem;cursor:pointer;}
+.logout-btn:hover{background:rgba(255,255,255,0.14);color:#fff;}
+.main{margin-left:220px;flex:1;display:flex;flex-direction:column;}
+.topbar{background:#fff;border-bottom:1px solid var(--line);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;}
+.topbar h2{font-size:1rem;color:var(--maroon-deep);}
+.content{padding:24px 28px;flex:1;}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:#fff;border-radius:14px;padding:18px 20px;border:1px solid var(--line);display:flex;align-items:center;gap:14px;}
+.stat-card .ic{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.stat-card .ic.maroon{background:rgba(109,26,38,0.1);}
+.stat-card .ic.gold{background:rgba(201,146,42,0.12);}
+.stat-card .ic.green{background:rgba(31,92,53,0.1);}
+.stat-card .num{font-size:1.6rem;font-weight:700;color:var(--maroon-deep);line-height:1;}
+.stat-card .lbl{font-size:0.72rem;color:var(--ink-soft);margin-top:3px;}
+.stat-card .pending{font-size:0.7rem;color:var(--gold);font-weight:600;margin-top:4px;}
+.panel{background:#fff;border-radius:14px;border:1px solid var(--line);overflow:hidden;margin-bottom:20px;}
+.panel-head{padding:16px 20px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);}
+.panel-head h3{font-size:0.95rem;color:var(--maroon-deep);}
+.btn{display:inline-flex;align-items:center;gap:6px;border:none;border-radius:8px;padding:8px 16px;font-size:0.78rem;font-weight:600;cursor:pointer;transition:all 0.15s ease;}
+.btn-primary{background:var(--maroon);color:#fff;}
+.btn-primary:hover{background:var(--maroon-deep);}
+.btn-ghost{background:#f4f0e8;color:var(--ink-soft);border:1px solid var(--line);}
+.btn-ghost:hover{background:#ebe4d4;}
+.btn-danger{background:#fbe4e4;color:var(--red);}
+.btn-danger:hover{background:#f5c6c6;}
+.btn-success{background:#e3f5e6;color:var(--green);}
+.btn-success:hover{background:#c8eacc;}
+.btn-sm{padding:6px 12px;font-size:0.72rem;}
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{text-align:left;font-size:0.68rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--ink-soft);padding:10px 16px;background:#f9f5ee;border-bottom:1px solid var(--line);}
+.tbl td{padding:12px 16px;font-size:0.82rem;border-bottom:1px solid rgba(232,220,196,0.4);vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:#fdf9f2;}
+.tbl img{width:42px;height:42px;border-radius:8px;object-fit:cover;border:1px solid var(--line);}
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+.badge-pending{background:#fff3cd;color:#8a5700;}
+.badge-approved{background:#e3f5e6;color:var(--green);}
+.badge-rejected{background:#fbe4e4;color:var(--red);}
+.td-actions{display:flex;gap:6px;flex-wrap:wrap;}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:16px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,0.25);}
+.modal-head{padding:18px 22px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;}
+.modal-head h3{font-size:1rem;color:var(--maroon-deep);}
+.modal-close{background:none;border:none;font-size:1.3rem;cursor:pointer;color:var(--ink-soft);}
+.modal-body{padding:22px;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:0.78rem;font-weight:600;color:var(--ink-soft);margin-bottom:5px;}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:9px 12px;border:1px solid #d8cdb8;border-radius:8px;font-size:0.88rem;font-family:inherit;background:#fffdf9;}
+.form-group textarea{min-height:70px;resize:vertical;}
+.modal-foot{padding:14px 22px;border-top:1px solid var(--line);display:flex;justify-content:flex-end;gap:10px;}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--maroon-deep);color:#fff;padding:12px 20px;border-radius:10px;font-size:0.85rem;box-shadow:0 8px 24px rgba(0,0,0,0.2);z-index:999;display:none;}
+.toast.show{display:block;}
+.toast.success{background:var(--green);}
+.toast.error{background:var(--red);}
+.empty{text-align:center;padding:40px 20px;color:var(--ink-soft);font-size:0.88rem;}
+.loading{text-align:center;padding:40px 20px;color:var(--ink-soft);}
 </style>
 </head>
 <body>
-
-<header>
-  <h1>Master Admin Panel</h1>
-  <div style="display:flex; align-items:center; gap:14px;">
-    <span class="who" id="whoLabel"></span>
-    <button onclick="logout()">Log Out</button>
+<aside class="sidebar">
+  <div class="sidebar-brand"><h1>VaishyaVaniParivar.com</h1><p>Master Admin Panel</p></div>
+  <div class="sidebar-who" id="sidebarWho">Loading...</div>
+  <div class="nav-group">
+    <div class="nav-group-label">Overview</div>
+    <div class="nav-item active" data-page="dashboard" onclick="showPage('dashboard')"><span class="ic">📊</span> Dashboard</div>
   </div>
-</header>
+  <div class="nav-group">
+    <div class="nav-group-label">Approvals</div>
+    <div class="nav-item" data-page="pending-users" onclick="showPage('pending-users')"><span class="ic">👤</span> Pending Users</div>
+    <div class="nav-item" data-page="pending-business" onclick="showPage('pending-business')"><span class="ic">💼</span> Pending Business</div>
+    <div class="nav-item" data-page="pending-matrimony" onclick="showPage('pending-matrimony')"><span class="ic">❤️</span> Pending Matrimony</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Content</div>
+    <div class="nav-item" data-page="event" onclick="showPage('event')"><span class="ic">📅</span> Events</div>
+    <div class="nav-item" data-page="news" onclick="showPage('news')"><span class="ic">📰</span> News</div>
+    <div class="nav-item" data-page="job" onclick="showPage('job')"><span class="ic">🧳</span> Jobs</div>
+    <div class="nav-item" data-page="education" onclick="showPage('education')"><span class="ic">🎓</span> Education</div>
+    <div class="nav-item" data-page="temple" onclick="showPage('temple')"><span class="ic">🛕</span> Temples & Trusts</div>
+    <div class="nav-item" data-page="directory" onclick="showPage('directory')"><span class="ic">👥</span> Directory</div>
+  </div>
+  <div class="nav-group">
+    <div class="nav-group-label">Manage</div>
+    <div class="nav-item" data-page="all-users" onclick="showPage('all-users')"><span class="ic">🗂️</span> All Members</div>
+    <div class="nav-item" data-page="all-business" onclick="showPage('all-business')"><span class="ic">🏢</span> All Businesses</div>
+  </div>
+  <div class="sidebar-footer"><button class="logout-btn" onclick="logout()">← Log Out</button></div>
+</aside>
 
-<div class="tabs">
-  <div class="tab active" data-tab="users">Pending Users</div>
-  <div class="tab" data-tab="business">Pending Businesses</div>
-  <div class="tab" data-tab="matrimony">Pending Matrimony</div>
+<div class="main">
+  <div class="topbar">
+    <h2 id="pageTitle">Dashboard</h2>
+    <div id="topbarActions"></div>
+  </div>
+  <div class="content" id="mainContent"><div class="loading">Loading...</div></div>
 </div>
 
-<main>
-  <div class="loading" id="loadingMsg">Loading…</div>
-  <div id="listContainer"></div>
-  <div class="empty" id="emptyMsg" style="display:none;">Nothing pending here right now. 🎉</div>
-</main>
+<div class="modal-overlay" id="listingModal">
+  <div class="modal">
+    <div class="modal-head">
+      <h3 id="modalTitle">Add Listing</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-group"><label>Title *</label><input type="text" id="fTitle"></div>
+      <div class="form-group"><label>Description</label><textarea id="fDesc"></textarea></div>
+      <div class="form-group"><label>Meta Line (location / date / tag)</label><input type="text" id="fMeta" placeholder="e.g. 📍 Ponda, Goa · 12 Aug 2026"></div>
+      <div class="form-group"><label>Upload Image</label><input type="file" id="fImageFile" accept="image/*"></div>
+      <div class="form-group"><label>Or paste Image URL</label><input type="text" id="fImageUrl" placeholder="https://..."></div>
+      <div class="form-group"><label>Status</label><select id="fStatus"><option value="approved">Approved (live)</option><option value="pending">Pending</option></select></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveListing()">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
 
 <script>
-  const API_BASE = 'https://vaishya-vani-backend.onrender.com';
-  const token = localStorage.getItem('vvp_admin_token');
-  const adminName = localStorage.getItem('vvp_admin_name');
+const API='https://vaishya-vani-backend.onrender.com';
+let token=localStorage.getItem('vvp_admin_token');
+let adminName=localStorage.getItem('vvp_admin_name');
+let currentPage='dashboard';
+let editingId=null;
+const LISTING_TYPES=['event','news','job','education','temple','directory'];
+const LABELS={dashboard:'Dashboard','pending-users':'Pending Users','pending-business':'Pending Business','pending-matrimony':'Pending Matrimony',event:'Events',news:'News',job:'Jobs',education:'Education',temple:'Temples & Trusts',directory:'Community Directory','all-users':'All Members','all-business':'All Businesses'};
 
-  if (!token) {
-    window.location.href = 'admin-login.html';
-  }
-  document.getElementById('whoLabel').textContent = adminName ? `Logged in as ${adminName}` : '';
+if(!token){window.location.href='admin-login.html';}
+document.getElementById('sidebarWho').textContent='Logged in as '+(adminName||'Admin');
 
-  function logout(){
-    localStorage.removeItem('vvp_admin_token');
-    localStorage.removeItem('vvp_admin_name');
-    window.location.href = 'admin-login.html';
-  }
+function logout(){localStorage.removeItem('vvp_admin_token');localStorage.removeItem('vvp_admin_name');window.location.href='admin-login.html';}
 
-  let currentTab = 'users';
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show '+(type||'');
+  setTimeout(()=>t.classList.remove('show'),3000);
+}
 
-  document.querySelectorAll('.tab').forEach(tab => {
-    tab.addEventListener('click', () => {
-      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      currentTab = tab.dataset.tab;
-      loadPending();
-    });
-  });
+async function api(method,path,body=null,isForm=false){
+  const opts={method,headers:{'Authorization':'Bearer '+token}};
+  if(body&&!isForm){opts.headers['Content-Type']='application/json';opts.body=JSON.stringify(body);}
+  if(body&&isForm){opts.body=body;}
+  try{
+    const res=await fetch(API+path,opts);
+    if(res.status===401){logout();return null;}
+    return res.json();
+  }catch(e){return null;}
+}
 
-  function itemHtml(tab, item){
-    if (tab === 'users') {
-      return `<div class="item">
-        <div class="info">
-          <h3>${item.full_name}</h3>
-          <p>📱 ${item.mobile_number} ${item.email ? '· ' + item.email : ''}</p>
-          <p>${item.business_opt_in ? '💼 Business signup' : ''} ${item.matrimony_opt_in ? '❤️ Matrimony signup' : ''}</p>
-          <div class="actions">
-            <button class="approve-btn" onclick="actOn('user', ${item.id}, 'approve', this)">Approve</button>
-            <button class="reject-btn" onclick="actOn('user', ${item.id}, 'reject', this)">Reject</button>
-          </div>
-        </div>
-      </div>`;
-    }
-    if (tab === 'business') {
-      return `<div class="item">
-        <img src="${item.logo_image_url || 'https://placehold.co/100?text=No+Logo'}" alt="">
-        <div class="info">
-          <h3>${item.business_name}</h3>
-          <p>Owner: ${item.owner_name} · ${item.category || ''} · ${item.city || ''}</p>
-          <p>${item.description || ''}</p>
-          <div class="actions">
-            <button class="approve-btn" onclick="actOn('business', ${item.id}, 'approve', this)">Approve</button>
-            <button class="reject-btn" onclick="actOn('business', ${item.id}, 'reject', this)">Reject</button>
-          </div>
-        </div>
-      </div>`;
-    }
-    // matrimony
-    return `<div class="item">
-      <img src="${item.profile_photo_url || 'https://placehold.co/100?text=No+Photo'}" alt="">
-      <div class="info">
-        <h3>${item.owner_name} — ${item.age || '—'} yrs, ${item.gender || ''}</h3>
-        <p>${item.education || ''} · ${item.profession || ''} · Native: ${item.native_place || '—'}</p>
-        <div class="actions">
-          <button class="approve-btn" onclick="actOn('matrimony', ${item.id}, 'approve', this)">Approve</button>
-          <button class="reject-btn" onclick="actOn('matrimony', ${item.id}, 'reject', this)">Reject</button>
-        </div>
+function showPage(page){
+  currentPage=page;
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const el=document.querySelector('[data-page="'+page+'"]');
+  if(el)el.classList.add('active');
+  document.getElementById('pageTitle').textContent=LABELS[page]||page;
+  const tb=document.getElementById('topbarActions');
+  if(LISTING_TYPES.includes(page)){
+    tb.innerHTML='<button class="btn btn-primary" onclick="openAddModal(\''+page+'\')">+ Add</button>';
+  }else{tb.innerHTML='';}
+  document.getElementById('mainContent').innerHTML='<div class="loading">Loading...</div>';
+  if(page==='dashboard')renderDashboard();
+  else if(page.startsWith('pending-'))renderPending(page);
+  else if(LISTING_TYPES.includes(page))renderListings(page);
+  else if(page==='all-users')renderAllUsers();
+  else if(page==='all-business')renderAllBusinesses();
+}
+
+async function renderDashboard(){
+  const s=await api('GET','/api/admin/stats');
+  if(!s)return;
+  const hasPending=(s.pending_members+s.pending_businesses+s.pending_matrimony)>0;
+  document.getElementById('mainContent').innerHTML=`
+    <div class="stat-row">
+      <div class="stat-card"><div class="ic maroon">👥</div><div><div class="num">${s.approved_members}</div><div class="lbl">Approved Members</div><div class="pending">${s.pending_members} pending</div></div></div>
+      <div class="stat-card"><div class="ic gold">💼</div><div><div class="num">${s.approved_businesses}</div><div class="lbl">Live Businesses</div><div class="pending">${s.pending_businesses} pending</div></div></div>
+      <div class="stat-card"><div class="ic green">❤️</div><div><div class="num">${s.approved_matrimony}</div><div class="lbl">Matrimony Profiles</div><div class="pending">${s.pending_matrimony} pending</div></div></div>
+    </div>
+    <div class="stat-row">
+      <div class="stat-card"><div class="ic gold">📅</div><div><div class="num">${s.listings.event||0}</div><div class="lbl">Events</div></div></div>
+      <div class="stat-card"><div class="ic maroon">📰</div><div><div class="num">${s.listings.news||0}</div><div class="lbl">News Articles</div></div></div>
+      <div class="stat-card"><div class="ic green">🧳</div><div><div class="num">${s.listings.job||0}</div><div class="lbl">Jobs</div></div></div>
+    </div>
+    <div class="panel">
+      <div class="panel-head"><h3>${hasPending?'⚠️ Action Required':'✅ All Up to Date'}</h3></div>
+      <div style="padding:16px 20px;font-size:0.87rem;color:var(--ink-soft);line-height:2;">
+        ${hasPending?`
+          ${s.pending_members>0?`• <strong>${s.pending_members}</strong> user registration(s) — <a href="#" onclick="showPage('pending-users');return false;" style="color:var(--maroon);">Review →</a><br>`:''}
+          ${s.pending_businesses>0?`• <strong>${s.pending_businesses}</strong> business profile(s) — <a href="#" onclick="showPage('pending-business');return false;" style="color:var(--maroon);">Review →</a><br>`:''}
+          ${s.pending_matrimony>0?`• <strong>${s.pending_matrimony}</strong> matrimony profile(s) — <a href="#" onclick="showPage('pending-matrimony');return false;" style="color:var(--maroon);">Review →</a>`:''}
+        `:'No pending items — the platform is fully up to date.'}
       </div>
     </div>`;
-  }
+}
 
-  async function loadPending(){
-    const container = document.getElementById('listContainer');
-    const loading = document.getElementById('loadingMsg');
-    const empty = document.getElementById('emptyMsg');
-    container.innerHTML = '';
-    empty.style.display = 'none';
-    loading.style.display = 'block';
+async function renderPending(page){
+  const typeMap={'pending-users':'users','pending-business':'business','pending-matrimony':'matrimony'};
+  const type=typeMap[page];
+  const data=await api('GET','/api/admin/pending/'+type);
+  if(!data||!data.length){document.getElementById('mainContent').innerHTML='<div class="empty">✅ Nothing pending here right now.</div>';return;}
+  const headers={users:'<th>Name</th><th>Mobile</th><th>Email</th><th>Opted Into</th><th>Date</th><th>Actions</th>',business:'<th>Logo</th><th>Business</th><th>Owner</th><th>City</th><th>Actions</th>',matrimony:'<th>Photo</th><th>Name</th><th>Age</th><th>Education</th><th>Native</th><th>Actions</th>'};
+  const rows=data.map(item=>{
+    if(type==='users')return`<tr><td><strong>${item.full_name}</strong></td><td>${item.mobile_number}</td><td>${item.email||'—'}</td><td>${item.business_opt_in?'💼 ':''}${item.matrimony_opt_in?'❤️':''}</td><td>${new Date(item.created_at).toLocaleDateString('en-IN')}</td><td><div class="td-actions"><button class="btn btn-success btn-sm" onclick="act('user',${item.id},'approve')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="act('user',${item.id},'reject')">✗ Reject</button></div></td></tr>`;
+    if(type==='business')return`<tr><td><img src="${item.logo_image_url||'https://placehold.co/50?text=B'}" alt=""></td><td><strong>${item.business_name}</strong></td><td>${item.owner_name}</td><td>${item.city||'—'}</td><td><div class="td-actions"><button class="btn btn-success btn-sm" onclick="act('business',${item.id},'approve')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="act('business',${item.id},'reject')">✗ Reject</button></div></td></tr>`;
+    return`<tr><td><img src="${item.profile_photo_url||'https://placehold.co/50?text=M'}" alt=""></td><td><strong>${item.owner_name}</strong></td><td>${item.age||'—'} · ${item.gender||''}</td><td>${item.education||'—'}</td><td>${item.native_place||'—'}</td><td><div class="td-actions"><button class="btn btn-success btn-sm" onclick="act('matrimony',${item.id},'approve')">✓ Approve</button><button class="btn btn-danger btn-sm" onclick="act('matrimony',${item.id},'reject')">✗ Reject</button></div></td></tr>`;
+  }).join('');
+  document.getElementById('mainContent').innerHTML=`<div class="panel"><div class="panel-body"><table class="tbl"><thead><tr>${headers[type]}</tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
 
-    try {
-      const res = await fetch(`${API_BASE}/api/admin/pending/${currentTab}`, {
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.status === 401 || res.status === 403) {
-        logout();
-        return;
-      }
-      const data = await res.json();
-      loading.style.display = 'none';
-      if (!Array.isArray(data) || data.length === 0) {
-        empty.style.display = 'block';
-        return;
-      }
-      container.innerHTML = data.map(item => itemHtml(currentTab, item)).join('');
-    } catch (err) {
-      loading.textContent = 'Could not load data. Please refresh.';
-    }
-  }
+async function act(type,id,action){
+  const d=await api('POST',`/api/admin/${action}/${type}/${id}`);
+  if(d){showToast(d.message||action+'d','success');showPage(currentPage);}
+  else showToast('Action failed','error');
+}
 
-  async function actOn(type, id, action, btnEl){
-    btnEl.disabled = true;
-    try {
-      const res = await fetch(`${API_BASE}/api/admin/${action}/${type}/${id}`, {
-        method: 'POST',
-        headers: { 'Authorization': `Bearer ${token}` }
-      });
-      if (res.ok) {
-        loadPending();
-      } else {
-        alert('Action failed. Please try again.');
-        btnEl.disabled = false;
-      }
-    } catch (err) {
-      alert('Could not reach the server.');
-      btnEl.disabled = false;
-    }
-  }
+async function renderListings(type){
+  const data=await api('GET','/api/admin/listings?type='+type);
+  if(!data||!data.length){document.getElementById('mainContent').innerHTML='<div class="empty">No listings yet. Click "+ Add" to create one.</div>';return;}
+  const rows=data.map(item=>`
+    <tr>
+      <td><img src="${item.image_url||'https://placehold.co/50?text=Img'}" alt=""></td>
+      <td><strong>${item.title}</strong><br><small style="color:var(--ink-soft)">${item.meta_line||''}</small></td>
+      <td>${item.description?item.description.substring(0,60)+'…':'—'}</td>
+      <td><span class="badge badge-${item.approval_status}">${item.approval_status}</span></td>
+      <td>${new Date(item.created_at).toLocaleDateString('en-IN')}</td>
+      <td><div class="td-actions"><button class="btn btn-ghost btn-sm" onclick="openEditModal(${item.id},'${type}')">✎ Edit</button><button class="btn btn-danger btn-sm" onclick="delListing(${item.id})">🗑</button></div></td>
+    </tr>`).join('');
+  document.getElementById('mainContent').innerHTML=`<div class="panel"><div class="panel-body"><table class="tbl"><thead><tr><th>Image</th><th>Title</th><th>Description</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
 
-  loadPending();
+async function renderAllUsers(){
+  const data=await api('GET','/api/admin/users');
+  if(!data||!data.length){document.getElementById('mainContent').innerHTML='<div class="empty">No members yet.</div>';return;}
+  const rows=data.map(u=>`<tr><td><strong>${u.full_name}</strong></td><td>${u.mobile_number}</td><td>${u.state_name||'—'} / ${u.district_name||'—'}</td><td>${u.business_opt_in?'💼 ':''}${u.matrimony_opt_in?'❤️':''}</td><td><span class="badge badge-${u.approval_status}">${u.approval_status}</span></td><td>${u.role}</td><td>${new Date(u.created_at).toLocaleDateString('en-IN')}</td><td><div class="td-actions">${u.role!=='master_admin'?`<button class="btn btn-danger btn-sm" onclick="delUser(${u.id},'${u.full_name.replace(/'/g,"\\'")}')">🗑</button>`:''}</div></td></tr>`).join('');
+  document.getElementById('mainContent').innerHTML=`<div class="panel"><div class="panel-body"><table class="tbl"><thead><tr><th>Name</th><th>Mobile</th><th>Location</th><th>Modules</th><th>Status</th><th>Role</th><th>Joined</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+async function renderAllBusinesses(){
+  const data=await api('GET','/api/admin/businesses');
+  if(!data||!data.length){document.getElementById('mainContent').innerHTML='<div class="empty">No businesses yet.</div>';return;}
+  const rows=data.map(b=>`<tr><td><img src="${b.logo_image_url||'https://placehold.co/50?text=B'}" alt=""></td><td><strong>${b.business_name}</strong></td><td>${b.category||'—'}</td><td>${b.owner_name}</td><td>${b.city||'—'}</td><td><span class="badge badge-${b.approval_status}">${b.approval_status}</span></td><td><button class="btn btn-danger btn-sm" onclick="delBiz(${b.id},'${b.business_name.replace(/'/g,"\\'")}')">🗑</button></td></tr>`).join('');
+  document.getElementById('mainContent').innerHTML=`<div class="panel"><div class="panel-body"><table class="tbl"><thead><tr><th>Logo</th><th>Business</th><th>Category</th><th>Owner</th><th>City</th><th>Status</th><th></th></tr></thead><tbody>${rows}</tbody></table></div></div>`;
+}
+
+async function delUser(id,name){if(!confirm('Delete "'+name+'"?'))return;const d=await api('DELETE','/api/admin/users/'+id);if(d&&!d.error){showToast('Deleted','success');renderAllUsers();}else showToast(d?.error||'Failed','error');}
+async function delBiz(id,name){if(!confirm('Delete "'+name+'"?'))return;const d=await api('DELETE','/api/admin/businesses/'+id);if(d&&!d.error){showToast('Deleted','success');renderAllBusinesses();}else showToast(d?.error||'Failed','error');}
+
+function openAddModal(type){
+  editingId=null;
+  document.getElementById('modalTitle').textContent='Add '+LABELS[type]?.replace(/s$/,'')||type;
+  ['fTitle','fDesc','fMeta','fImageUrl'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('fImageFile').value='';
+  document.getElementById('fStatus').value='approved';
+  document.getElementById('listingModal').classList.add('open');
+  document.getElementById('listingModal').dataset.type=type;
+}
+
+async function openEditModal(id,type){
+  editingId=id;
+  document.getElementById('modalTitle').textContent='Edit Listing';
+  document.getElementById('listingModal').dataset.type=type;
+  const data=await api('GET','/api/admin/listings/'+id);
+  if(!data)return;
+  document.getElementById('fTitle').value=data.title||'';
+  document.getElementById('fDesc').value=data.description||'';
+  document.getElementById('fMeta').value=data.meta_line||'';
+  document.getElementById('fImageUrl').value=data.image_url||'';
+  document.getElementById('fImageFile').value='';
+  document.getElementById('fStatus').value=data.approval_status||'approved';
+  document.getElementById('listingModal').classList.add('open');
+}
+
+function closeModal(){document.getElementById('listingModal').classList.remove('open');}
+
+async function saveListing(){
+  const type=document.getElementById('listingModal').dataset.type;
+  const title=document.getElementById('fTitle').value.trim();
+  if(!title){showToast('Title is required','error');return;}
+  const fd=new FormData();
+  fd.append('type',type);
+  fd.append('title',title);
+  fd.append('description',document.getElementById('fDesc').value);
+  fd.append('meta_line',document.getElementById('fMeta').value);
+  fd.append('approval_status',document.getElementById('fStatus').value);
+  const file=document.getElementById('fImageFile').files[0];
+  const url=document.getElementById('fImageUrl').value.trim();
+  if(file)fd.append('image',file);
+  else if(url)fd.append('image_url',url);
+  const path=editingId?'/api/admin/listings/'+editingId:'/api/admin/listings';
+  const method=editingId?'PUT':'POST';
+  const d=await api(method,path,fd,true);
+  if(d&&!d.error){showToast(editingId?'Updated!':'Created!','success');closeModal();showPage(currentPage);}
+  else showToast(d?.error||'Save failed','error');
+}
+
+async function delListing(id){
+  if(!confirm('Delete this listing?'))return;
+  const d=await api('DELETE','/api/admin/listings/'+id);
+  if(d&&!d.error){showToast('Deleted','success');showPage(currentPage);}
+  else showToast('Failed','error');
+}
+
+showPage('dashboard');
 </script>
-
 </body>
 </html>
