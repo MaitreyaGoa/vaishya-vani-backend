@@ -60,6 +60,10 @@ app.use('/api/admin', adminAuthRouter);
 const adminApprovalsRouter = require('./routes/adminApprovals');
 app.use('/api/admin', adminApprovalsRouter);
 
+// Admin content management (add/edit/delete listings, businesses, matrimony, users)
+const adminContentRouter = require('./routes/adminContent');
+app.use('/api/admin', adminContentRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
