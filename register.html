@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Register | VaishyaVaniParivar.com</title>
+<style>
+  :root{
+    --maroon:#7a1f2b;
+    --maroon-dark:#5c161f;
+    --gold:#c9952f;
+    --gold-light:#e8c478;
+    --cream:#fdf8ee;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI', Tahoma, Arial, sans-serif;
+    background:var(--cream);
+    color:#2b1810;
+  }
+  header{
+    background:var(--maroon);
+    color:#fff;
+    text-align:center;
+    padding:22px 16px;
+  }
+  header h1{ margin:0; font-size:1.4rem; color:var(--gold-light); }
+  header p{ margin:6px 0 0; font-size:0.9rem; opacity:0.9; }
+
+  main{
+    max-width:640px;
+    margin:0 auto;
+    padding:24px 16px 60px;
+  }
+
+  .card{
+    background:#fff;
+    border-radius:14px;
+    padding:24px 20px;
+    margin-bottom:22px;
+    box-shadow:0 4px 14px rgba(0,0,0,0.06);
+  }
+  .card h2{
+    color:var(--maroon);
+    font-size:1.1rem;
+    margin-top:0;
+    border-bottom:2px solid var(--gold);
+    padding-bottom:8px;
+  }
+
+  label{
+    display:block;
+    font-size:0.85rem;
+    font-weight:600;
+    margin:14px 0 5px;
+    color:#4a3a2c;
+  }
+  input[type=text], input[type=email], input[type=password], input[type=number], input[type=tel], select, textarea{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #d8cdb8;
+    border-radius:8px;
+    font-size:0.92rem;
+    font-family:inherit;
+    background:#fffdf9;
+  }
+  textarea{ min-height:70px; resize:vertical; }
+  input[type=file]{
+    width:100%;
+    padding:8px;
+    border:1px dashed var(--gold);
+    border-radius:8px;
+    background:#fffaf0;
+    font-size:0.85rem;
+  }
+
+  .opt-in{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:#fdf3e0;
+    border:1px solid var(--gold);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-top:12px;
+    cursor:pointer;
+  }
+  .opt-in input{ width:18px; height:18px; }
+  .opt-in span{ font-weight:700; color:var(--maroon); font-size:0.95rem; }
+
+  .conditional-section{
+    display:none;
+    margin-top:16px;
+    padding-top:10px;
+    border-top:1px dashed var(--gold);
+  }
+  .conditional-section.active{ display:block; }
+
+  .submit-btn{
+    width:100%;
+    background:var(--maroon);
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:14px;
+    font-size:1rem;
+    font-weight:700;
+    cursor:pointer;
+    margin-top:10px;
+  }
+  .submit-btn:hover{ background:var(--maroon-dark); }
+  .submit-btn:disabled{ opacity:0.6; cursor:not-allowed; }
+
+  .status-msg{
+    text-align:center;
+    padding:14px;
+    border-radius:10px;
+    margin-top:16px;
+    font-weight:600;
+    display:none;
+  }
+  .status-msg.success{ background:#e3f5e6; color:#1f4d2b; display:block; }
+  .status-msg.error{ background:#fbe4e4; color:#7a1f1f; display:block; }
+
+  .row{ display:flex; gap:12px; }
+  .row > div{ flex:1; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>VaishyaVaniParivar.com</h1>
+  <p>Community Registration — Your Life. Your Network. Your News.</p>
+</header>
+
+<main>
+  <form id="regForm">
+
+    <div class="card">
+      <h2>1. Basic Details</h2>
+
+      <label for="full_name">Full Name *</label>
+      <input type="text" id="full_name" name="full_name" required>
+
+      <div class="row">
+        <div>
+          <label for="mobile_number">Mobile Number *</label>
+          <input type="tel" id="mobile_number" name="mobile_number" required>
+        </div>
+        <div>
+          <label for="email">Email (optional)</label>
+          <input type="email" id="email" name="email">
+        </div>
+      </div>
+
+      <label for="password">Create Password *</label>
+      <input type="password" id="password" name="password" required minlength="6">
+
+      <label for="community_reference">Community / Family Reference</label>
+      <input type="text" id="community_reference" name="community_reference" placeholder="Name of a known community member or family contact">
+
+      <h2 style="margin-top:24px;">2. Location</h2>
+      <label for="state_id">State</label>
+      <select id="state_id" name="state_id"><option value="">Loading states...</option></select>
+
+      <label for="district_id">District</label>
+      <select id="district_id" name="district_id"><option value="">Select state first</option></select>
+
+      <label for="taluka_id">Taluka</label>
+      <select id="taluka_id" name="taluka_id"><option value="">Select district first</option></select>
+    </div>
+
+    <div class="card">
+      <h2>3. What would you like to register for?</h2>
+
+      <label class="opt-in">
+        <input type="checkbox" id="business_opt_in" name="business_opt_in">
+        <span>💼 Register a Business</span>
+      </label>
+
+      <label class="opt-in">
+        <input type="checkbox" id="matrimony_opt_in" name="matrimony_opt_in">
+        <span>❤️ Register for Matrimony</span>
+      </label>
+    </div>
+
+    <div class="card conditional-section" id="businessSection">
+      <h2>Business Details</h2>
+
+      <label for="business_name">Business Name *</label>
+      <input type="text" id="business_name" name="business_name">
+
+      <label for="business_category">Category</label>
+      <input type="text" id="business_category" name="business_category" placeholder="e.g. Retail, Hardware, Catering">
+
+      <label for="business_description">Description</label>
+      <textarea id="business_description" name="business_description" placeholder="Products / services offered"></textarea>
+
+      <div class="row">
+        <div>
+          <label for="business_contact">Business Contact Number</label>
+          <input type="tel" id="business_contact" name="business_contact">
+        </div>
+        <div>
+          <label for="business_city">City</label>
+          <input type="text" id="business_city" name="business_city">
+        </div>
+      </div>
+
+      <label for="business_address">Address</label>
+      <textarea id="business_address" name="business_address"></textarea>
+
+      <label for="website_url">Website / Social Media Link (optional)</label>
+      <input type="text" id="website_url" name="website_url">
+
+      <label for="business_logo">Business Logo / Photo *</label>
+      <input type="file" id="business_logo" name="business_logo" accept="image/*">
+    </div>
+
+    <div class="card conditional-section" id="matrimonySection">
+      <h2>Matrimony Details</h2>
+
+      <div class="row">
+        <div>
+          <label for="age">Age *</label>
+          <input type="number" id="age" name="age" min="18" max="100">
+        </div>
+        <div>
+          <label for="gender">Gender *</label>
+          <select id="gender" name="gender">
+            <option value="">Select</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="education">Education</label>
+          <input type="text" id="education" name="education">
+        </div>
+        <div>
+          <label for="profession">Profession</label>
+          <input type="text" id="profession" name="profession">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="height">Height</label>
+          <input type="text" id="height" name="height" placeholder="e.g. 5'6&quot;">
+        </div>
+        <div>
+          <label for="gotra">Gotra</label>
+          <input type="text" id="gotra" name="gotra">
+        </div>
+      </div>
+
+      <div class="row">
+        <div>
+          <label for="native_place">Native Place</label>
+          <input type="text" id="native_place" name="native_place">
+        </div>
+        <div>
+          <label for="current_location">Current Location</label>
+          <input type="text" id="current_location" name="current_location">
+        </div>
+      </div>
+
+      <label for="language_preference">Language Preference</label>
+      <input type="text" id="language_preference" name="language_preference" placeholder="e.g. Konkani, Marathi, Hindi, English">
+
+      <label for="family_background">Family Background</label>
+      <textarea id="family_background" name="family_background"></textarea>
+
+      <label for="family_contact">Family Contact Number</label>
+      <input type="tel" id="family_contact" name="family_contact">
+
+      <label for="family_introduction">Family Introduction</label>
+      <textarea id="family_introduction" name="family_introduction"></textarea>
+
+      <label for="matrimony_photo">Profile Photo *</label>
+      <input type="file" id="matrimony_photo" name="matrimony_photo" accept="image/*">
+
+      <label for="horoscope_file">Horoscope (optional)</label>
+      <input type="file" id="horoscope_file" name="horoscope_file" accept="image/*,.pdf">
+    </div>
+
+    <button type="submit" class="submit-btn" id="submitBtn">Submit Registration</button>
+    <div class="status-msg" id="statusMsg"></div>
+  </form>
+</main>
+
+<script>
+  // ⚠️ Update this if your Render URL is different
+  const API_BASE = 'https://vaishya-vani-backend.onrender.com';
+
+  // Toggle conditional sections
+  document.getElementById('business_opt_in').addEventListener('change', function(){
+    document.getElementById('businessSection').classList.toggle('active', this.checked);
+  });
+  document.getElementById('matrimony_opt_in').addEventListener('change', function(){
+    document.getElementById('matrimonySection').classList.toggle('active', this.checked);
+  });
+
+  // Load states on page load
+  async function loadStates(){
+    try {
+      const res = await fetch(`${API_BASE}/api/states`);
+      const states = await res.json();
+      const sel = document.getElementById('state_id');
+      sel.innerHTML = '<option value="">Select State</option>';
+      states.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.id;
+        opt.textContent = s.name;
+        sel.appendChild(opt);
+      });
+    } catch(e) {
+      document.getElementById('state_id').innerHTML = '<option value="">Could not load states</option>';
+    }
+  }
+  loadStates();
+
+  document.getElementById('state_id').addEventListener('change', async function(){
+    const distSel = document.getElementById('district_id');
+    const talSel = document.getElementById('taluka_id');
+    distSel.innerHTML = '<option value="">Loading...</option>';
+    talSel.innerHTML = '<option value="">Select district first</option>';
+    if (!this.value) { distSel.innerHTML = '<option value="">Select state first</option>'; return; }
+    const res = await fetch(`${API_BASE}/api/districts/${this.value}`);
+    const districts = await res.json();
+    distSel.innerHTML = '<option value="">Select District</option>';
+    districts.forEach(d => {
+      const opt = document.createElement('option');
+      opt.value = d.id;
+      opt.textContent = d.name;
+      distSel.appendChild(opt);
+    });
+  });
+
+  document.getElementById('district_id').addEventListener('change', async function(){
+    const talSel = document.getElementById('taluka_id');
+    talSel.innerHTML = '<option value="">Loading...</option>';
+    if (!this.value) { talSel.innerHTML = '<option value="">Select district first</option>'; return; }
+    const res = await fetch(`${API_BASE}/api/talukas/${this.value}`);
+    const talukas = await res.json();
+    talSel.innerHTML = '<option value="">Select Taluka (if applicable)</option>';
+    talukas.forEach(t => {
+      const opt = document.createElement('option');
+      opt.value = t.id;
+      opt.textContent = t.name;
+      talSel.appendChild(opt);
+    });
+  });
+
+  // Submit form
+  document.getElementById('regForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const statusMsg = document.getElementById('statusMsg');
+    btn.disabled = true;
+    btn.textContent = 'Submitting...';
+    statusMsg.style.display = 'none';
+
+    const formData = new FormData(this);
+    formData.set('business_opt_in', document.getElementById('business_opt_in').checked);
+    formData.set('matrimony_opt_in', document.getElementById('matrimony_opt_in').checked);
+
+    try {
+      const res = await fetch(`${API_BASE}/api/register`, {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (res.ok) {
+        statusMsg.className = 'status-msg success';
+        statusMsg.textContent = '✅ ' + data.message;
+        this.reset();
+        document.getElementById('businessSection').classList.remove('active');
+        document.getElementById('matrimonySection').classList.remove('active');
+      } else {
+        statusMsg.className = 'status-msg error';
+        statusMsg.textContent = '❌ ' + (data.error || 'Something went wrong.');
+      }
+    } catch(err) {
+      statusMsg.className = 'status-msg error';
+      statusMsg.textContent = '❌ Could not reach the server. Please try again.';
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Submit Registration';
+    }
+  });
+</script>
+
+</body>
+</html>
