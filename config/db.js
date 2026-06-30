@@ -9,8 +9,7 @@ const pool = new Pool({
   user: process.env.DB_USER || 'postgres',
   password: process.env.DB_PASSWORD || '',
   database: process.env.DB_NAME || 'vaishya_vani_connect',
-  // Uncomment below if deploying to a host that requires SSL (e.g. Render, Railway, Heroku)
-  // ssl: { rejectUnauthorized: false }
+  ssl: { rejectUnauthorized: false }
 });
 
 pool.on('connect', () => {
