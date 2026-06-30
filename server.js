@@ -52,6 +52,14 @@ app.use('/api/register', registerRouter);
 const listingsRouter = require('./routes/listings');
 app.use('/api', listingsRouter);
 
+// Admin authentication (login + one-time setup)
+const adminAuthRouter = require('./routes/adminAuth');
+app.use('/api/admin', adminAuthRouter);
+
+// Admin approval queue (protected — requires admin login)
+const adminApprovalsRouter = require('./routes/adminApprovals');
+app.use('/api/admin', adminApprovalsRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
