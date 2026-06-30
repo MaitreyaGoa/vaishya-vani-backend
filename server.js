@@ -48,6 +48,10 @@ app.use('/api/admin', adminLocationsRouter);
 const registerRouter = require('./routes/register');
 app.use('/api/register', registerRouter);
 
+// Public listings — Events/News/Jobs/Education/Temples/Directory + Business + Matrimony
+const listingsRouter = require('./routes/listings');
+app.use('/api', listingsRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
