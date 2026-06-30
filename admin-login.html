@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login — VaishyaVaniParivar.com</title>
+<style>
+  :root{ --maroon:#7a1f2b; --maroon-deep:#4a1118; --gold:#c9952f; --cream:#fbf6ec; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{
+    font-family:'Segoe UI', Tahoma, Arial, sans-serif;
+    background:var(--cream);
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .card{
+    background:#fff;
+    border-radius:16px;
+    padding:36px 30px;
+    width:100%;
+    max-width:380px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.08);
+  }
+  h1{ color:var(--maroon-deep); font-size:1.3rem; text-align:center; margin-bottom:4px; }
+  p.sub{ text-align:center; color:#7a695c; font-size:0.85rem; margin-bottom:22px; }
+  label{ display:block; font-size:0.82rem; font-weight:600; margin:14px 0 5px; color:#4a3a2c; }
+  input{
+    width:100%;
+    padding:10px 12px;
+    border:1px solid #d8cdb8;
+    border-radius:8px;
+    font-size:0.92rem;
+  }
+  button{
+    width:100%;
+    margin-top:20px;
+    background:var(--maroon);
+    color:#fff;
+    border:none;
+    border-radius:8px;
+    padding:12px;
+    font-weight:700;
+    cursor:pointer;
+  }
+  button:hover{ background:var(--maroon-deep); }
+  .msg{ text-align:center; margin-top:14px; font-size:0.85rem; display:none; }
+  .msg.error{ color:#a32020; display:block; }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Admin Login</h1>
+    <p class="sub">VaishyaVaniParivar.com Master Admin Panel</p>
+    <form id="loginForm">
+      <label for="mobile_number">Mobile Number</label>
+      <input type="tel" id="mobile_number" required>
+      <label for="password">Password</label>
+      <input type="password" id="password" required>
+      <button type="submit">Log In</button>
+      <div class="msg error" id="msg"></div>
+    </form>
+  </div>
+
+<script>
+  const API_BASE = 'https://vaishya-vani-backend.onrender.com';
+  document.getElementById('loginForm').addEventListener('submit', async function(e){
+    e.preventDefault();
+    const msg = document.getElementById('msg');
+    msg.style.display = 'none';
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          mobile_number: document.getElementById('mobile_number').value,
+          password: document.getElementById('password').value
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem('vvp_admin_token', data.token);
+        localStorage.setItem('vvp_admin_name', data.full_name);
+        window.location.href = 'admin-dashboard.html';
+      } else {
+        msg.textContent = data.error || 'Login failed.';
+        msg.style.display = 'block';
+      }
+    } catch (err) {
+      msg.textContent = 'Could not reach the server.';
+      msg.style.display = 'block';
+    }
+  });
+</script>
+</body>
+</html>

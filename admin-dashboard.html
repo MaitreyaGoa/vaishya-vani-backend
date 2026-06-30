@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard — VaishyaVaniParivar.com</title>
+<style>
+  :root{ --maroon:#7a1f2b; --maroon-deep:#4a1118; --gold:#c9952f; --cream:#fbf6ec; }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{ font-family:'Segoe UI', Tahoma, Arial, sans-serif; background:var(--cream); color:#241712; }
+
+  header{
+    background:var(--maroon-deep);
+    color:#fff;
+    padding:16px 24px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  header h1{ font-size:1.05rem; }
+  header .who{ font-size:0.82rem; opacity:0.85; }
+  header button{
+    background:rgba(255,255,255,0.12);
+    color:#fff;
+    border:none;
+    padding:7px 16px;
+    border-radius:20px;
+    font-size:0.78rem;
+    cursor:pointer;
+  }
+
+  .tabs{ display:flex; gap:8px; padding:18px 24px 0; max-width:1000px; margin:0 auto; }
+  .tab{
+    padding:9px 18px;
+    border-radius:20px;
+    background:#fff;
+    border:1px solid #e8dcc4;
+    font-size:0.85rem;
+    font-weight:600;
+    cursor:pointer;
+    color:#5b4a3f;
+  }
+  .tab.active{ background:var(--maroon); color:#fff; border-color:var(--maroon); }
+
+  main{ max-width:1000px; margin:0 auto; padding:20px 24px 60px; }
+
+  .item{
+    background:#fff;
+    border:1px solid #e8dcc4;
+    border-radius:14px;
+    padding:16px;
+    margin-bottom:14px;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+  }
+  .item img{ width:70px; height:70px; border-radius:10px; object-fit:cover; flex-shrink:0; background:#eee; }
+  .item .info{ flex:1; }
+  .item h3{ font-size:0.98rem; color:var(--maroon-deep); }
+  .item p{ font-size:0.82rem; color:#5b4a3f; margin-top:3px; line-height:1.5; }
+  .item .actions{ display:flex; gap:8px; margin-top:10px; }
+  .item .actions button{
+    border:none;
+    padding:7px 16px;
+    border-radius:18px;
+    font-size:0.78rem;
+    font-weight:700;
+    cursor:pointer;
+  }
+  .approve-btn{ background:#1f4d2b; color:#fff; }
+  .reject-btn{ background:#a32020; color:#fff; }
+
+  .empty{ text-align:center; color:#7a695c; padding:50px 20px; font-size:0.9rem; }
+  .loading{ text-align:center; color:#7a695c; padding:50px 20px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Master Admin Panel</h1>
+  <div style="display:flex; align-items:center; gap:14px;">
+    <span class="who" id="whoLabel"></span>
+    <button onclick="logout()">Log Out</button>
+  </div>
+</header>
+
+<div class="tabs">
+  <div class="tab active" data-tab="users">Pending Users</div>
+  <div class="tab" data-tab="business">Pending Businesses</div>
+  <div class="tab" data-tab="matrimony">Pending Matrimony</div>
+</div>
+
+<main>
+  <div class="loading" id="loadingMsg">Loading…</div>
+  <div id="listContainer"></div>
+  <div class="empty" id="emptyMsg" style="display:none;">Nothing pending here right now. 🎉</div>
+</main>
+
+<script>
+  const API_BASE = 'https://vaishya-vani-backend.onrender.com';
+  const token = localStorage.getItem('vvp_admin_token');
+  const adminName = localStorage.getItem('vvp_admin_name');
+
+  if (!token) {
+    window.location.href = 'admin-login.html';
+  }
+  document.getElementById('whoLabel').textContent = adminName ? `Logged in as ${adminName}` : '';
+
+  function logout(){
+    localStorage.removeItem('vvp_admin_token');
+    localStorage.removeItem('vvp_admin_name');
+    window.location.href = 'admin-login.html';
+  }
+
+  let currentTab = 'users';
+
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      currentTab = tab.dataset.tab;
+      loadPending();
+    });
+  });
+
+  function itemHtml(tab, item){
+    if (tab === 'users') {
+      return `<div class="item">
+        <div class="info">
+          <h3>${item.full_name}</h3>
+          <p>📱 ${item.mobile_number} ${item.email ? '· ' + item.email : ''}</p>
+          <p>${item.business_opt_in ? '💼 Business signup' : ''} ${item.matrimony_opt_in ? '❤️ Matrimony signup' : ''}</p>
+          <div class="actions">
+            <button class="approve-btn" onclick="actOn('user', ${item.id}, 'approve', this)">Approve</button>
+            <button class="reject-btn" onclick="actOn('user', ${item.id}, 'reject', this)">Reject</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    if (tab === 'business') {
+      return `<div class="item">
+        <img src="${item.logo_image_url || 'https://placehold.co/100?text=No+Logo'}" alt="">
+        <div class="info">
+          <h3>${item.business_name}</h3>
+          <p>Owner: ${item.owner_name} · ${item.category || ''} · ${item.city || ''}</p>
+          <p>${item.description || ''}</p>
+          <div class="actions">
+            <button class="approve-btn" onclick="actOn('business', ${item.id}, 'approve', this)">Approve</button>
+            <button class="reject-btn" onclick="actOn('business', ${item.id}, 'reject', this)">Reject</button>
+          </div>
+        </div>
+      </div>`;
+    }
+    // matrimony
+    return `<div class="item">
+      <img src="${item.profile_photo_url || 'https://placehold.co/100?text=No+Photo'}" alt="">
+      <div class="info">
+        <h3>${item.owner_name} — ${item.age || '—'} yrs, ${item.gender || ''}</h3>
+        <p>${item.education || ''} · ${item.profession || ''} · Native: ${item.native_place || '—'}</p>
+        <div class="actions">
+          <button class="approve-btn" onclick="actOn('matrimony', ${item.id}, 'approve', this)">Approve</button>
+          <button class="reject-btn" onclick="actOn('matrimony', ${item.id}, 'reject', this)">Reject</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  async function loadPending(){
+    const container = document.getElementById('listContainer');
+    const loading = document.getElementById('loadingMsg');
+    const empty = document.getElementById('emptyMsg');
+    container.innerHTML = '';
+    empty.style.display = 'none';
+    loading.style.display = 'block';
+
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/pending/${currentTab}`, {
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.status === 401 || res.status === 403) {
+        logout();
+        return;
+      }
+      const data = await res.json();
+      loading.style.display = 'none';
+      if (!Array.isArray(data) || data.length === 0) {
+        empty.style.display = 'block';
+        return;
+      }
+      container.innerHTML = data.map(item => itemHtml(currentTab, item)).join('');
+    } catch (err) {
+      loading.textContent = 'Could not load data. Please refresh.';
+    }
+  }
+
+  async function actOn(type, id, action, btnEl){
+    btnEl.disabled = true;
+    try {
+      const res = await fetch(`${API_BASE}/api/admin/${action}/${type}/${id}`, {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${token}` }
+      });
+      if (res.ok) {
+        loadPending();
+      } else {
+        alert('Action failed. Please try again.');
+        btnEl.disabled = false;
+      }
+    } catch (err) {
+      alert('Could not reach the server.');
+      btnEl.disabled = false;
+    }
+  }
+
+  loadPending();
+</script>
+
+</body>
+</html>
