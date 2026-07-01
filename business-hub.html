@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Business Hub — VaishyaVaniParivar.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--gold:#c9922a;--gold-light:#e8c46a;--gold-pale:#f5e6b8;--cream:#faf5eb;--ink:#1a0e09;--ink-soft:#5c4033;--line:rgba(201,146,42,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);}
+
+nav{position:sticky;top:0;z-index:50;background:rgba(250,245,235,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;color:var(--maroon-deep);text-decoration:none;}
+.nav-right{display:flex;gap:18px;align-items:center;}
+.nav-right a{font-size:0.82rem;font-weight:500;color:var(--ink-soft);text-decoration:none;}
+.nav-right a:hover{color:var(--maroon);}
+.nav-cta{background:var(--maroon);color:#fff !important;padding:8px 18px;border-radius:999px;font-weight:600 !important;}
+
+.page-hero{background:linear-gradient(135deg,var(--maroon-deep) 0%,var(--maroon) 100%);padding:52px 32px;text-align:center;color:#fff;}
+.page-hero .eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:10px;}
+.page-hero p{font-size:0.95rem;opacity:0.8;max-width:480px;margin:0 auto;}
+
+.search-bar-wrap{max-width:680px;margin:-26px auto 0;padding:0 20px;position:relative;z-index:10;}
+.search-bar{display:flex;background:#fff;border-radius:14px;border:1px solid var(--line);box-shadow:0 8px 24px rgba(0,0,0,0.1);overflow:hidden;}
+.search-bar input{flex:1;padding:16px 18px;border:none;font-size:0.95rem;font-family:inherit;outline:none;background:transparent;}
+.search-bar button{background:var(--maroon);color:#fff;border:none;padding:0 24px;font-weight:600;font-size:0.88rem;cursor:pointer;}
+.search-bar button:hover{background:var(--maroon-deep);}
+
+.main-layout{max-width:1120px;margin:0 auto;padding:32px 20px 64px;display:grid;grid-template-columns:240px 1fr;gap:24px;}
+@media(max-width:800px){.main-layout{grid-template-columns:1fr;}.sidebar-filters{display:none;}}
+
+.sidebar-filters{background:#fff;border-radius:16px;border:1px solid var(--line);padding:20px;height:fit-content;position:sticky;top:80px;}
+.filter-section{margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid var(--line);}
+.filter-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.filter-title{font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px;}
+.filter-section select{width:100%;padding:8px 10px;border:1px solid var(--line);border-radius:8px;font-size:0.82rem;font-family:inherit;background:var(--cream);color:var(--ink);}
+.cat-pills{display:flex;flex-wrap:wrap;gap:6px;}
+.cat-pill{padding:5px 12px;border-radius:999px;font-size:0.72rem;font-weight:600;background:var(--cream);border:1px solid var(--line);cursor:pointer;transition:all 0.15s;}
+.cat-pill:hover,.cat-pill.active{background:var(--maroon);color:#fff;border-color:var(--maroon);}
+.clear-btn{width:100%;margin-top:14px;background:none;border:1px solid var(--line);border-radius:8px;padding:8px;font-size:0.78rem;color:var(--ink-soft);cursor:pointer;}
+.clear-btn:hover{background:var(--cream);}
+
+.results-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.results-head h2{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--maroon-deep);}
+.results-head span{font-size:0.82rem;color:var(--ink-soft);}
+.biz-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+@media(max-width:640px){.biz-grid{grid-template-columns:1fr;}}
+
+.biz-card{background:#fff;border-radius:16px;border:1px solid var(--line);overflow:hidden;transition:all 0.22s ease;cursor:pointer;text-decoration:none;color:inherit;display:block;}
+.biz-card:hover{transform:translateY(-4px);box-shadow:0 16px 32px -12px rgba(109,26,38,0.2);border-color:rgba(201,146,42,0.5);}
+.biz-card-img{width:100%;height:150px;object-fit:cover;background:var(--cream);display:block;}
+.biz-card-body{padding:16px;}
+.biz-cat{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--gold);margin-bottom:6px;}
+.biz-name{font-size:1rem;font-weight:700;color:var(--maroon-deep);margin-bottom:4px;}
+.biz-desc{font-size:0.8rem;color:var(--ink-soft);line-height:1.5;margin-bottom:10px;}
+.biz-location{font-size:0.74rem;color:var(--ink-soft);display:flex;align-items:center;gap:5px;}
+
+.pagination{display:flex;justify-content:center;gap:8px;margin-top:32px;}
+.pg-btn{padding:8px 16px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:0.82rem;cursor:pointer;font-family:inherit;}
+.pg-btn:hover,.pg-btn.active{background:var(--maroon);color:#fff;border-color:var(--maroon);}
+.pg-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+.empty{text-align:center;padding:60px 20px;color:var(--ink-soft);}
+.loading{text-align:center;padding:60px 20px;color:var(--ink-soft);}
+
+footer{background:var(--maroon-deep);color:rgba(250,245,235,0.65);text-align:center;padding:28px 20px;font-size:0.78rem;}
+footer a{color:var(--gold-light);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">VaishyaVaniParivar.com</a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="listing.html?type=events">Events</a>
+    <a href="listing.html?type=matrimony">Matrimony</a>
+    <a href="register.html" class="nav-cta">Join Free</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Community Business Hub</div>
+  <h1>Discover Vaishya Vani Businesses</h1>
+  <p>Trusted businesses from our community — across Maharashtra, Goa, Karnataka and Kerala.</p>
+</div>
+
+<div class="search-bar-wrap">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Search businesses, categories, products..." onkeydown="if(event.key==='Enter')doSearch()">
+    <button onclick="doSearch()">Search</button>
+  </div>
+</div>
+
+<div class="main-layout">
+  <!-- FILTERS SIDEBAR -->
+  <aside class="sidebar-filters">
+    <div class="filter-section">
+      <div class="filter-title">Category</div>
+      <div class="cat-pills" id="catPills"><div style="font-size:0.78rem;color:var(--ink-soft)">Loading...</div></div>
+    </div>
+    <div class="filter-section">
+      <div class="filter-title">Location</div>
+      <select id="filterState" onchange="onStateChange()"><option value="">All States</option></select>
+      <select id="filterDistrict" onchange="onDistrictChange()" style="margin-top:8px;"><option value="">All Districts</option></select>
+      <select id="filterTaluka" onchange="doSearch()" style="margin-top:8px;"><option value="">All Talukas</option></select>
+    </div>
+    <button class="clear-btn" onclick="clearFilters()">✕ Clear All Filters</button>
+  </aside>
+
+  <!-- RESULTS -->
+  <div>
+    <div class="results-head">
+      <h2 id="resultsTitle">All Businesses</h2>
+      <span id="resultsCount"></span>
+    </div>
+    <div id="bizGrid" class="biz-grid"><div class="loading">Loading businesses...</div></div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<footer>
+  <a href="index.html">VaishyaVaniParivar.com</a> · <a href="register.html">Register Your Business</a>
+</footer>
+
+<script>
+const API='https://vaishya-vani-backend.onrender.com';
+let currentPage=1;
+let activeCategory='';
+
+async function loadFilters(){
+  // Load states
+  const states=await fetch(API+'/api/states').then(r=>r.json());
+  const stateSel=document.getElementById('filterState');
+  states.forEach(s=>{const o=document.createElement('option');o.value=s.id;o.textContent=s.name;stateSel.appendChild(o);});
+  // Categories loaded with first search
+}
+
+async function onStateChange(){
+  const stateId=document.getElementById('filterState').value;
+  const distSel=document.getElementById('filterDistrict');
+  const talSel=document.getElementById('filterTaluka');
+  distSel.innerHTML='<option value="">All Districts</option>';
+  talSel.innerHTML='<option value="">All Talukas</option>';
+  if(stateId){
+    const districts=await fetch(API+'/api/districts/'+stateId).then(r=>r.json());
+    districts.forEach(d=>{const o=document.createElement('option');o.value=d.id;o.textContent=d.name;distSel.appendChild(o);});
+  }
+  currentPage=1;doSearch();
+}
+
+async function onDistrictChange(){
+  const districtId=document.getElementById('filterDistrict').value;
+  const talSel=document.getElementById('filterTaluka');
+  talSel.innerHTML='<option value="">All Talukas</option>';
+  if(districtId){
+    const talukas=await fetch(API+'/api/talukas/'+districtId).then(r=>r.json());
+    talukas.forEach(t=>{const o=document.createElement('option');o.value=t.id;o.textContent=t.name;talSel.appendChild(o);});
+  }
+  currentPage=1;doSearch();
+}
+
+function setCategory(cat){
+  activeCategory=activeCategory===cat?'':cat;
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.toggle('active',p.dataset.cat===activeCategory));
+  currentPage=1;doSearch();
+}
+
+function clearFilters(){
+  document.getElementById('searchInput').value='';
+  document.getElementById('filterState').value='';
+  document.getElementById('filterDistrict').innerHTML='<option value="">All Districts</option>';
+  document.getElementById('filterTaluka').innerHTML='<option value="">All Talukas</option>';
+  activeCategory='';
+  document.querySelectorAll('.cat-pill').forEach(p=>p.classList.remove('active'));
+  currentPage=1;doSearch();
+}
+
+function doSearch(){
+  currentPage=currentPage||1;
+  const params=new URLSearchParams();
+  const q=document.getElementById('searchInput').value.trim();
+  if(q)params.set('q',q);
+  if(activeCategory)params.set('category',activeCategory);
+  const stateId=document.getElementById('filterState').value;
+  const districtId=document.getElementById('filterDistrict').value;
+  const talukaId=document.getElementById('filterTaluka').value;
+  if(stateId)params.set('state_id',stateId);
+  if(districtId)params.set('district_id',districtId);
+  if(talukaId)params.set('taluka_id',talukaId);
+  params.set('page',currentPage);
+  loadResults(params);
+}
+
+async function loadResults(params){
+  const grid=document.getElementById('bizGrid');
+  grid.innerHTML='<div class="loading">Loading...</div>';
+  document.getElementById('pagination').innerHTML='';
+  try{
+    const data=await fetch(API+'/api/businesses/search?'+params.toString()).then(r=>r.json());
+    // populate categories first time
+    if(document.getElementById('catPills').children.length===1){
+      const pills=data.categories.map(c=>`<span class="cat-pill" data-cat="${c}" onclick="setCategory('${c}')">${c}</span>`).join('');
+      document.getElementById('catPills').innerHTML=pills||'<span style="font-size:0.78rem;color:var(--ink-soft)">None yet</span>';
+    }
+    const q=params.get('q')||'';
+    document.getElementById('resultsTitle').textContent=q?`Results for "${q}"`:'All Businesses';
+    document.getElementById('resultsCount').textContent=`${data.total} business${data.total!==1?'es':''}`;
+    if(!data.businesses.length){grid.innerHTML='<div class="empty">No businesses found. Try different filters.</div>';return;}
+    grid.innerHTML=data.businesses.map(b=>`
+      <a class="biz-card" href="business-detail.html?id=${b.id}">
+        <img class="biz-card-img" src="${b.logo_image_url||'https://placehold.co/600x300/faf5eb/c9922a?text='+encodeURIComponent(b.business_name)}" alt="${b.business_name}" onerror="this.src='https://placehold.co/600x300/faf5eb/c9922a?text=Business'">
+        <div class="biz-card-body">
+          <div class="biz-cat">${b.category||'General'}</div>
+          <div class="biz-name">${b.business_name}</div>
+          <div class="biz-desc">${b.description?b.description.substring(0,80)+'…':''}</div>
+          <div class="biz-location">📍 ${[b.taluka_name,b.district_name,b.state_name].filter(Boolean).join(', ')||b.city||'—'}</div>
+        </div>
+      </a>`).join('');
+    // Pagination
+    if(data.pages>1){
+      let pgs='';
+      if(data.page>1)pgs+=`<button class="pg-btn" onclick="goPage(${data.page-1})">← Prev</button>`;
+      for(let i=1;i<=data.pages;i++){
+        if(i===data.page||Math.abs(i-data.page)<=2)pgs+=`<button class="pg-btn${i===data.page?' active':''}" onclick="goPage(${i})">${i}</button>`;
+        else if(Math.abs(i-data.page)===3)pgs+='<span style="padding:8px 4px;color:var(--ink-soft)">…</span>';
+      }
+      if(data.page<data.pages)pgs+=`<button class="pg-btn" onclick="goPage(${data.page+1})">Next →</button>`;
+      document.getElementById('pagination').innerHTML=pgs;
+    }
+  }catch(e){grid.innerHTML='<div class="empty">Could not load businesses. Please try again shortly.</div>';}
+}
+
+function goPage(p){currentPage=p;doSearch();window.scrollTo({top:0,behavior:'smooth'});}
+
+loadFilters();
+doSearch();
+</script>
+</body>
+</html>
