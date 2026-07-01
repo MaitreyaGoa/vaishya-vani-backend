@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Events — VaishyaVaniParivar.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--gold:#c9922a;--gold-light:#e8c46a;--gold-pale:#f5e6b8;--cream:#faf5eb;--ink:#1a0e09;--ink-soft:#5c4033;--line:rgba(201,146,42,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,245,235,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;color:var(--maroon-deep);text-decoration:none;}
+.nav-right a{font-size:0.82rem;font-weight:500;color:var(--ink-soft);text-decoration:none;margin-left:20px;}
+.nav-right a:hover{color:var(--maroon);}
+.nav-cta{background:var(--maroon);color:#fff !important;padding:8px 18px;border-radius:999px;}
+
+.page-hero{background:linear-gradient(135deg,var(--maroon-deep) 0%,var(--maroon) 100%);padding:52px 32px;text-align:center;color:#fff;}
+.page-hero .eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold-light);margin-bottom:10px;}
+.page-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:700;margin-bottom:10px;}
+.page-hero p{font-size:0.95rem;opacity:0.8;max-width:480px;margin:0 auto 24px;}
+.toggle-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;}
+.toggle-btn{padding:9px 22px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:transparent;color:#fff;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.18s;}
+.toggle-btn.active,.toggle-btn:hover{background:#fff;color:var(--maroon-deep);border-color:#fff;}
+
+.main{max-width:1000px;margin:0 auto;padding:36px 20px 64px;}
+
+/* CALENDAR STRIP */
+.cal-strip{display:flex;gap:8px;overflow-x:auto;padding-bottom:6px;margin-bottom:28px;scrollbar-width:thin;}
+.cal-strip::-webkit-scrollbar{height:3px;}
+.cal-month{flex:0 0 auto;background:#fff;border:1px solid var(--line);border-radius:12px;padding:10px 14px;min-width:80px;text-align:center;cursor:pointer;transition:all 0.18s;}
+.cal-month:hover,.cal-month.active{background:var(--maroon);color:#fff;border-color:var(--maroon);}
+.cal-month .m{font-size:0.78rem;font-weight:700;}
+.cal-month .y{font-size:0.65rem;opacity:0.6;margin-top:2px;}
+
+/* EVENT CARDS */
+.events-list{display:flex;flex-direction:column;gap:18px;}
+.event-card{background:#fff;border-radius:16px;border:1px solid var(--line);overflow:hidden;display:grid;grid-template-columns:200px 1fr;transition:all 0.2s ease;text-decoration:none;color:inherit;}
+.event-card:hover{transform:translateY(-3px);box-shadow:0 14px 28px -12px rgba(109,26,38,0.18);border-color:rgba(201,146,42,0.5);}
+@media(max-width:600px){.event-card{grid-template-columns:1fr;}}
+.event-img{width:100%;height:160px;object-fit:cover;background:var(--cream);display:block;}
+@media(max-width:600px){.event-img{height:180px;}}
+.event-body{padding:20px;}
+.event-date-badge{display:inline-flex;align-items:center;gap:6px;background:var(--gold-pale);color:var(--maroon-deep);font-size:0.72rem;font-weight:700;padding:4px 12px;border-radius:999px;margin-bottom:10px;}
+.event-title{font-family:'Playfair Display',serif;font-size:1.15rem;font-weight:700;color:var(--maroon-deep);margin-bottom:6px;line-height:1.3;}
+.event-desc{font-size:0.83rem;color:var(--ink-soft);line-height:1.6;margin-bottom:10px;}
+.event-meta{display:flex;flex-wrap:wrap;gap:14px;font-size:0.76rem;color:var(--ink-soft);}
+.event-meta span{display:flex;align-items:center;gap:4px;}
+
+/* PAST EVENTS — muted style */
+.event-card.past{opacity:0.7;}
+.event-card.past .event-date-badge{background:#ede8dc;color:#7a6850;}
+
+.empty{text-align:center;padding:60px 20px;color:var(--ink-soft);}
+.loading{text-align:center;padding:60px 20px;color:var(--ink-soft);}
+
+footer{background:var(--maroon-deep);color:rgba(250,245,235,0.65);text-align:center;padding:28px;font-size:0.78rem;}
+footer a{color:var(--gold-light);text-decoration:none;}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">VaishyaVaniParivar.com</a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="business-hub.html">Businesses</a>
+    <a href="news.html">News</a>
+    <a href="register.html" class="nav-cta">Join Free</a>
+  </div>
+</nav>
+
+<div class="page-hero">
+  <div class="eyebrow">Community Events</div>
+  <h1>Events & Gatherings</h1>
+  <p>Meets, seminars, cultural programs and celebrations by the Vaishya Vani Parivar.</p>
+  <div class="toggle-row">
+    <button class="toggle-btn active" id="btnUpcoming" onclick="setFilter('upcoming')">Upcoming Events</button>
+    <button class="toggle-btn" id="btnPast" onclick="setFilter('past')">Past Events</button>
+    <button class="toggle-btn" id="btnAll" onclick="setFilter('all')">All Events</button>
+  </div>
+</div>
+
+<div class="main">
+  <div class="cal-strip" id="calStrip"></div>
+  <div id="eventsList" class="events-list"><div class="loading">Loading events...</div></div>
+</div>
+
+<footer>
+  <a href="index.html">VaishyaVaniParivar.com</a> · <a href="register.html">Register for Updates</a>
+</footer>
+
+<script>
+const API = 'https://vaishya-vani-backend.onrender.com';
+let currentFilter = 'upcoming';
+let allEvents = [];
+let activeMonth = null;
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+function setFilter(f) {
+  currentFilter = f;
+  activeMonth = null;
+  document.getElementById('btnUpcoming').classList.toggle('active', f === 'upcoming');
+  document.getElementById('btnPast').classList.toggle('active', f === 'past');
+  document.getElementById('btnAll').classList.toggle('active', f === 'all');
+  loadEvents();
+}
+
+function filterIcon(f) {
+  document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+}
+
+async function loadEvents() {
+  document.getElementById('eventsList').innerHTML = '<div class="loading">Loading...</div>';
+  document.getElementById('calStrip').innerHTML = '';
+  const url = API + '/api/listings/event' + (currentFilter !== 'all' ? '?filter=' + currentFilter : '');
+  try {
+    const data = await fetch(url).then(r => r.json());
+    allEvents = data;
+    buildCalStrip(data);
+    renderEvents(data);
+  } catch(e) {
+    document.getElementById('eventsList').innerHTML = '<div class="empty">Could not load events. Please try again shortly.</div>';
+  }
+}
+
+function buildCalStrip(events) {
+  const months = {};
+  events.forEach(e => {
+    if (!e.event_date) return;
+    const d = new Date(e.event_date);
+    const key = d.getFullYear() + '-' + d.getMonth();
+    months[key] = { month: d.getMonth(), year: d.getFullYear() };
+  });
+  const strip = document.getElementById('calStrip');
+  if (!Object.keys(months).length) return;
+  Object.values(months).forEach(m => {
+    const el = document.createElement('div');
+    el.className = 'cal-month';
+    el.dataset.key = m.year + '-' + m.month;
+    el.innerHTML = `<div class="m">${MONTHS[m.month]}</div><div class="y">${m.year}</div>`;
+    el.onclick = () => filterByMonth(m.year, m.month, el);
+    strip.appendChild(el);
+  });
+}
+
+function filterByMonth(year, month, el) {
+  if (activeMonth && activeMonth === year + '-' + month) {
+    activeMonth = null;
+    document.querySelectorAll('.cal-month').forEach(c => c.classList.remove('active'));
+    renderEvents(allEvents);
+    return;
+  }
+  activeMonth = year + '-' + month;
+  document.querySelectorAll('.cal-month').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  const filtered = allEvents.filter(e => {
+    if (!e.event_date) return false;
+    const d = new Date(e.event_date);
+    return d.getFullYear() === year && d.getMonth() === month;
+  });
+  renderEvents(filtered);
+}
+
+function renderEvents(events) {
+  const list = document.getElementById('eventsList');
+  if (!events.length) {
+    list.innerHTML = '<div class="empty">No events found in this period.<br>Check back soon or <a href="register.html" style="color:var(--maroon)">register</a> to get notified.</div>';
+    return;
+  }
+  const today = new Date();
+  list.innerHTML = events.map(e => {
+    const isPast = e.event_date && new Date(e.event_date) < today;
+    const dateStr = e.event_date
+      ? new Date(e.event_date).toLocaleDateString('en-IN', {day:'numeric', month:'long', year:'numeric'})
+      : null;
+    return `
+      <a class="event-card${isPast?' past':''}" href="listing-detail.html?id=${e.id}">
+        <img class="event-img" src="${e.image_url || 'https://placehold.co/400x200/faf5eb/c9922a?text=Event'}"
+             alt="${e.title}" onerror="this.src='https://placehold.co/400x200/faf5eb/c9922a?text=Event'">
+        <div class="event-body">
+          ${dateStr ? `<div class="event-date-badge">📅 ${dateStr}${isPast?' · Past event':''}</div>` : '<div class="event-date-badge">📅 Date TBA</div>'}
+          <div class="event-title">${e.title}</div>
+          <div class="event-desc">${e.description ? e.description.substring(0,130)+'…' : ''}</div>
+          <div class="event-meta">
+            ${e.location ? `<span>📍 ${e.location}</span>` : ''}
+            ${e.meta_line && !e.location ? `<span>${e.meta_line}</span>` : ''}
+          </div>
+        </div>
+      </a>`;
+  }).join('');
+}
+
+loadEvents();
+</script>
+</body>
+</html>
