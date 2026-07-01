@@ -35,6 +35,17 @@ h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-
 .loading{text-align:center;padding:80px 20px;color:var(--ink-soft);}
 footer{background:var(--maroon-deep);color:rgba(250,245,235,0.65);text-align:center;padding:28px;font-size:0.78rem;}
 footer a{color:var(--gold-light);text-decoration:none;}
+
+  /* ── PHASE 8 MOBILE FIXES ── */
+  @media (max-width: 480px) {
+    body { font-size: 15px; }
+    nav { padding: 0 14px !important; }
+    .nav-right a:not(.nav-cta) { display: none; }
+    .page-hero { padding: 36px 16px !important; }
+    .page-hero h1 { font-size: 1.6rem !important; }
+    .main-layout, .main { padding-left: 14px !important; padding-right: 14px !important; }
+    .stat-row { grid-template-columns: 1fr 1fr !important; }
+  }
 </style>
 </head>
 <body>
@@ -56,6 +67,7 @@ footer a{color:var(--gold-light);text-decoration:none;}
 
 <footer>
   <a href="index.html">VaishyaVaniParivar.com</a>
+ · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="terms.html" style="color:inherit;">Terms</a>
 </footer>
 
 <script>
