@@ -64,6 +64,17 @@ nav{background:var(--maroon-deep);padding:0 28px;height:60px;display:flex;align-
 .empty p{font-size:0.85rem;line-height:1.6;}
 .empty a{color:var(--maroon);font-weight:600;text-decoration:none;}
 .loading{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+
+  /* ── PHASE 8 MOBILE FIXES ── */
+  @media (max-width: 480px) {
+    body { font-size: 15px; }
+    nav { padding: 0 14px !important; }
+    .nav-right a:not(.nav-cta) { display: none; }
+    .page-hero { padding: 36px 16px !important; }
+    .page-hero h1 { font-size: 1.6rem !important; }
+    .main-layout, .main { padding-left: 14px !important; padding-right: 14px !important; }
+    .stat-row { grid-template-columns: 1fr 1fr !important; }
+  }
 </style>
 </head>
 <body>
