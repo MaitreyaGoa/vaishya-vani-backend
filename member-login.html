@@ -29,7 +29,40 @@ input:focus{outline:none;border-color:var(--maroon);}
 .footer-links a{color:var(--maroon);font-weight:600;text-decoration:none;}
 .divider{display:flex;align-items:center;gap:12px;margin:18px 0 0;color:#b0a090;font-size:0.75rem;}
 .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line);}
+
+  /* ── PHASE 8 MOBILE FIXES ── */
+  @media (max-width: 480px) {
+    body { font-size: 15px; }
+    nav { padding: 0 14px !important; }
+    .nav-right a:not(.nav-cta) { display: none; }
+    .page-hero { padding: 36px 16px !important; }
+    .page-hero h1 { font-size: 1.6rem !important; }
+    .main-layout, .main { padding-left: 14px !important; padding-right: 14px !important; }
+    .stat-row { grid-template-columns: 1fr 1fr !important; }
+  }
 </style>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Log in to your VaishyaVaniParivar.com member account to access matrimony, business and community features.">
+  <meta name="keywords" content="Vaishya Vani, Vaishya Vani Samaj, Vaishya Vani Parivar, community, matrimony, business, Goa, Maharashtra, Karnataka, Kerala">
+  <meta name="author" content="VaishyaVaniParivar.com">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaishyavaniparivar.com/member-login.html">
+
+  <!-- Open Graph (Facebook, WhatsApp) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Member Login — VaishyaVaniParivar.com">
+  <meta property="og:description" content="Log in to your VaishyaVaniParivar.com member account to access matrimony, business and community features.">
+  <meta property="og:url" content="https://vaishyavaniparivar.com/member-login.html">
+  <meta property="og:image" content="https://vaishyavaniparivar.com/logo.jpeg">
+  <meta property="og:site_name" content="VaishyaVaniParivar.com">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Member Login — VaishyaVaniParivar.com">
+  <meta name="twitter:description" content="Log in to your VaishyaVaniParivar.com member account to access matrimony, business and community features.">
+  <meta name="twitter:image" content="https://vaishyavaniparivar.com/logo.jpeg">
 </head>
 <body>
   <div class="card">
