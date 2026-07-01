@@ -1,60 +1,124 @@
-// routes/listings.js
-// Public read-only routes that power the homepage category pages.
-// Only returns approval_status = 'approved' rows — pending/rejected items
-// never show up publicly, per the platform's approval-first rule.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loading… — VaishyaVaniParivar.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--gold:#c9922a;--gold-light:#e8c46a;--gold-pale:#f5e6b8;--cream:#faf5eb;--ink:#1a0e09;--ink-soft:#5c4033;--line:rgba(201,146,42,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);}
+nav{position:sticky;top:0;z-index:50;background:rgba(250,245,235,0.92);backdrop-filter:blur(16px);border-bottom:1px solid var(--line);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;color:var(--maroon-deep);text-decoration:none;}
+.nav-right a{font-size:0.82rem;font-weight:500;color:var(--ink-soft);text-decoration:none;margin-left:20px;}
+.nav-right a:hover{color:var(--maroon);}
+.breadcrumb{max-width:760px;margin:20px auto 0;padding:0 20px;font-size:0.78rem;color:var(--ink-soft);}
+.breadcrumb a{color:var(--maroon);text-decoration:none;}
+.main{max-width:760px;margin:0 auto;padding:20px 20px 64px;}
+.hero-img{width:100%;max-height:380px;object-fit:cover;border-radius:18px;display:block;margin-bottom:28px;border:1px solid var(--line);}
+.type-badge{display:inline-flex;align-items:center;gap:5px;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;color:var(--maroon-deep);line-height:1.2;margin-bottom:16px;}
+.meta-row{display:flex;flex-wrap:wrap;gap:18px;margin-bottom:24px;padding-bottom:24px;border-bottom:1px solid var(--line);}
+.meta-item{font-size:0.82rem;color:var(--ink-soft);display:flex;align-items:center;gap:6px;}
+.body-text{font-size:0.96rem;line-height:1.8;color:var(--ink-soft);}
+.body-text p{margin-bottom:16px;}
+.action-row{margin-top:28px;display:flex;flex-wrap:wrap;gap:10px;}
+.btn{display:inline-flex;align-items:center;gap:7px;border:none;border-radius:999px;padding:11px 22px;font-size:0.85rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.15s;}
+.btn-primary{background:var(--maroon);color:#fff;}
+.btn-primary:hover{background:var(--maroon-deep);}
+.btn-outline{color:var(--maroon);border:1.5px solid var(--maroon);background:transparent;}
+.btn-outline:hover{background:var(--maroon);color:#fff;}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:0.82rem;color:var(--maroon);text-decoration:none;font-weight:600;margin-top:32px;}
+.loading{text-align:center;padding:80px 20px;color:var(--ink-soft);}
+footer{background:var(--maroon-deep);color:rgba(250,245,235,0.65);text-align:center;padding:28px;font-size:0.78rem;}
+footer a{color:var(--gold-light);text-decoration:none;}
+</style>
+</head>
+<body>
 
-const express = require('express');
-const router = express.Router();
-const pool = require('../config/db');
+<nav>
+  <a class="nav-brand" href="index.html">VaishyaVaniParivar.com</a>
+  <div class="nav-right">
+    <a href="index.html">Home</a>
+    <a href="events.html">Events</a>
+    <a href="news.html">News</a>
+  </div>
+</nav>
 
-// Generic listings: events, news, jobs, education, temple, directory
-router.get('/listings/:type', async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT id, type, title, description, image_url, meta_line, created_at
-       FROM community_listings
-       WHERE type = $1 AND approval_status = 'approved'
-       ORDER BY created_at DESC`,
-      [req.params.type]
-    );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+<div class="breadcrumb"><a href="index.html">Home</a> › <span id="breadcrumbType">—</span> › <span id="breadcrumbTitle">Loading...</span></div>
+
+<div class="main" id="mainContent">
+  <div class="loading">Loading...</div>
+</div>
+
+<footer>
+  <a href="index.html">VaishyaVaniParivar.com</a>
+</footer>
+
+<script>
+const API = 'https://vaishya-vani-backend.onrender.com';
+const params = new URLSearchParams(window.location.search);
+const id = params.get('id');
+
+const TYPE_CONFIG = {
+  event:     { icon: '📅', label: 'Events',    backUrl: 'events.html',   backLabel: '← Events' },
+  news:      { icon: '📰', label: 'News',       backUrl: 'news.html',     backLabel: '← News' },
+  job:       { icon: '🧳', label: 'Jobs',       backUrl: 'listing.html?type=jobs',      backLabel: '← Jobs' },
+  education: { icon: '🎓', label: 'Education',  backUrl: 'listing.html?type=education', backLabel: '← Education' },
+  temple:    { icon: '🛕', label: 'Temples & Trusts', backUrl: 'listing.html?type=temples', backLabel: '← Temples & Trusts' },
+  directory: { icon: '👥', label: 'Directory',  backUrl: 'listing.html?type=directory', backLabel: '← Directory' },
+};
+
+async function loadDetail() {
+  if (!id) {
+    document.getElementById('mainContent').innerHTML = '<div class="loading">No listing ID found. <a href="index.html">Go home →</a></div>';
+    return;
   }
-});
-
-// Business Hub — approved businesses only
-router.get('/businesses', async (req, res) => {
   try {
-    const result = await pool.query(
-      `SELECT id, business_name, category, description, contact_number, city,
-              website_url, logo_image_url, created_at
-       FROM business_profiles
-       WHERE approval_status = 'approved'
-       ORDER BY created_at DESC`
-    );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+    const item = await fetch(API + '/api/listing/' + id).then(r => r.json());
+    if (item.error) {
+      document.getElementById('mainContent').innerHTML = '<div class="loading">Listing not found. <a href="index.html">Go home →</a></div>';
+      return;
+    }
 
-// Matrimony Portal — approved profiles only, phone hidden unless phone_visible = true
-router.get('/matrimony', async (req, res) => {
-  try {
-    const result = await pool.query(
-      `SELECT id, age, gender, education, profession, native_place, current_location,
-              height, gotra, language_preference, profile_photo_url,
-              CASE WHEN phone_visible THEN family_contact ELSE NULL END AS family_contact,
-              created_at
-       FROM matrimony_profiles
-       WHERE approval_status = 'approved'
-       ORDER BY created_at DESC`
-    );
-    res.json(result.rows);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
+    const cfg = TYPE_CONFIG[item.type] || { icon: '📋', label: 'Listing', backUrl: 'index.html', backLabel: '← Home' };
+    document.title = item.title + ' — VaishyaVaniParivar.com';
+    document.getElementById('breadcrumbType').innerHTML = `<a href="${cfg.backUrl}">${cfg.label}</a>`;
+    document.getElementById('breadcrumbTitle').textContent = item.title;
 
-module.exports = router;
+    const dateStr = item.event_date
+      ? new Date(item.event_date).toLocaleDateString('en-IN', {weekday:'long', day:'numeric', month:'long', year:'numeric'})
+      : null;
+
+    const waText = encodeURIComponent(`${item.title}\n${window.location.href}`);
+
+    document.getElementById('mainContent').innerHTML = `
+      ${item.image_url ? `<img class="hero-img" src="${item.image_url}" alt="${item.title}" onerror="this.style.display='none'">` : ''}
+      <div class="type-badge">${cfg.icon} ${cfg.label}</div>
+      <h1>${item.title}</h1>
+      <div class="meta-row">
+        ${dateStr ? `<span class="meta-item">📅 ${dateStr}</span>` : ''}
+        ${item.location ? `<span class="meta-item">📍 ${item.location}</span>` : ''}
+        ${item.meta_line && !item.location ? `<span class="meta-item">${item.meta_line}</span>` : ''}
+        <span class="meta-item">🗓️ ${new Date(item.created_at).toLocaleDateString('en-IN', {day:'numeric',month:'long',year:'numeric'})}</span>
+      </div>
+      <div class="body-text">
+        ${item.description ? item.description.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('') : '<p>No further details provided.</p>'}
+      </div>
+      <div class="action-row">
+        ${item.external_link ? `<a class="btn btn-primary" href="${item.external_link}" target="_blank" rel="noopener">🔗 Learn More / Register</a>` : ''}
+        <a class="btn btn-outline" href="https://wa.me/?text=${waText}" target="_blank">💬 Share on WhatsApp</a>
+      </div>
+      <a class="back-link" href="${cfg.backUrl}">${cfg.backLabel}</a>`;
+  } catch(e) {
+    document.getElementById('mainContent').innerHTML = '<div class="loading">Could not load this listing. <a href="index.html">Go home →</a></div>';
+  }
+}
+
+loadDetail();
+</script>
+</body>
+</html>
