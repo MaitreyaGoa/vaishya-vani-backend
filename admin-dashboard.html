@@ -144,7 +144,7 @@ body{font-family:'Segoe UI',Tahoma,Arial,sans-serif;background:#f4f0e8;color:var
       <div class="form-group"><label>Meta Line (location / date / tag)</label><input type="text" id="fMeta" placeholder="e.g. 📍 Ponda, Goa · 12 Aug 2026"></div>
       <div class="form-group"><label>Upload Image</label><input type="file" id="fImageFile" accept="image/*"></div>
       <div class="form-group"><label>Or paste Image URL</label><input type="text" id="fImageUrl" placeholder="https://..."></div>
-      <div class="form-group"><label>Status</label><select id="fStatus"><option value="approved">Approved (live)</option><option value="pending">Pending</option></select></div>
+      <div class="form-group"><label>Event Date (for Events only)</label><input type="date" id="fEventDate"></div><div class="form-group"><label>Venue / Location</label><input type="text" id="fLocation" placeholder="e.g. Community Hall, Ponda, Goa"></div><div class="form-group"><label>External Link (optional)</label><input type="text" id="fExtLink" placeholder="https://..."></div><div class="form-group"><label>Status</label><select id="fStatus"><option value="approved">Approved (live)</option><option value="pending">Pending</option></select></div>
     </div>
     <div class="modal-foot"><button class="btn btn-ghost" onclick="closeModal('listingModal')">Cancel</button><button class="btn btn-primary" onclick="saveListing()">Save</button></div>
   </div>
@@ -480,7 +480,7 @@ async function delBiz(id,name){if(!confirm('Delete "'+name+'"?'))return;const d=
 function openAddModal(type){
   editingId=null;
   document.getElementById('modalTitle').textContent='Add '+LABELS[type]||type;
-  ['fTitle','fDesc','fMeta','fImageUrl'].forEach(id=>document.getElementById(id).value='');
+  ['fTitle','fDesc','fMeta','fImageUrl','fEventDate','fLocation','fExtLink'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('fImageFile').value='';
   document.getElementById('fStatus').value='approved';
   document.getElementById('listingModal').dataset.type=type;
@@ -494,7 +494,7 @@ async function openEditModal(id,type){
   if(!data)return;
   document.getElementById('fTitle').value=data.title||'';
   document.getElementById('fDesc').value=data.description||'';
-  document.getElementById('fMeta').value=data.meta_line||'';
+  document.getElementById('fMeta').value=data.meta_line||'';document.getElementById('fEventDate').value=data.event_date?data.event_date.substring(0,10):'';document.getElementById('fLocation').value=data.location||'';document.getElementById('fExtLink').value=data.external_link||'';
   document.getElementById('fImageUrl').value=data.image_url||'';
   document.getElementById('fImageFile').value='';
   document.getElementById('fStatus').value=data.approval_status||'approved';
@@ -509,7 +509,7 @@ async function saveListing(){
   fd.append('type',type);fd.append('title',title);
   fd.append('description',document.getElementById('fDesc').value);
   fd.append('meta_line',document.getElementById('fMeta').value);
-  fd.append('approval_status',document.getElementById('fStatus').value);
+  fd.append('approval_status',document.getElementById('fStatus').value);fd.append('event_date',document.getElementById('fEventDate').value);fd.append('location',document.getElementById('fLocation').value);fd.append('external_link',document.getElementById('fExtLink').value);
   const file=document.getElementById('fImageFile').files[0];
   const url=document.getElementById('fImageUrl').value.trim();
   if(file)fd.append('image',file);else if(url)fd.append('image_url',url);
