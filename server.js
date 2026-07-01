@@ -72,6 +72,18 @@ app.use('/api/admin', adminTalukaStatsRouter);
 const businessRouter = require('./routes/business');
 app.use('/api', businessRouter);
 
+// Matrimony public routes
+const matrimonyRouter = require('./routes/matrimony');
+app.use('/api', matrimonyRouter);
+
+// Member authentication (login for registered members)
+const memberAuthRouter = require('./routes/memberAuth');
+app.use('/api', memberAuthRouter);
+
+// Interest/Match system (requires member login)
+const interestsRouter = require('./routes/interests');
+app.use('/api', interestsRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
