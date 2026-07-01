@@ -156,6 +156,7 @@ async function loadProfile() {
                style="margin-top:10px;background:rgba(255,255,255,0.15);color:#fff;">
               ✉️ Contact via Platform
             </a>
+            <div id="interestSection" style="margin-top:10px;"></div>
           </div>
 
           <div class="share-card">
@@ -219,6 +220,8 @@ async function loadProfile() {
           </div>
         </div>
       </div>`;
+    // Check interest status after DOM renders
+    setTimeout(() => checkInterestStatus(p.id), 150);
   } catch(e) {
     document.getElementById('mainWrap').innerHTML = '<div class="loading">Could not load profile. <a href="matrimony.html">← Back</a></div>';
   }
@@ -230,6 +233,69 @@ function copyLink() {
     btn.textContent = '✓ Copied!';
     setTimeout(() => btn.textContent = '📋 Copy Link', 2000);
   });
+}
+
+// Check if logged-in member has already sent/received interest for this profile
+async function checkInterestStatus(profileId) {
+  const token = localStorage.getItem('vvp_member_token');
+  const section = document.getElementById('interestSection');
+  if (!section) return;
+
+  if (!token) {
+    section.innerHTML = `<a href="member-login.html?redirect=matrimony-detail.html?id=${profileId}" 
+      style="display:block;background:rgba(255,255,255,0.15);color:#fff;text-align:center;padding:10px;border-radius:10px;text-decoration:none;font-size:0.82rem;font-weight:600;margin-top:0;">
+      🔑 Login to Send Interest
+    </a>`;
+    return;
+  }
+
+  try {
+    const res = await fetch(API + '/api/interests/status/' + profileId, {
+      headers: { 'Authorization': 'Bearer ' + token }
+    });
+    const status = await res.json();
+
+    if (status.is_match) {
+      section.innerHTML = `<div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;font-size:0.82rem;color:var(--gold-light);font-weight:700;">💞 It's a Match! <a href="my-interests.html" style="color:#fff;text-decoration:underline;">View in My Interests</a></div>`;
+    } else if (status.sent) {
+      const label = status.sent.status === 'accepted' ? '✓ Interest Accepted' : status.sent.status === 'declined' ? '✗ Interest Declined' : '⏳ Interest Sent';
+      section.innerHTML = `<div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;text-align:center;font-size:0.82rem;color:rgba(255,255,255,0.85);">${label}</div>`;
+    } else {
+      section.innerHTML = `
+        <button onclick="sendInterest(${profileId})" 
+          style="width:100%;background:var(--gold-light);color:var(--maroon-deep);border:none;border-radius:10px;padding:11px;font-weight:700;font-size:0.88rem;cursor:pointer;margin-top:0;">
+          💌 Send Interest
+        </button>`;
+    }
+  } catch(e) {}
+}
+
+async function sendInterest(profileId) {
+  const token = localStorage.getItem('vvp_member_token');
+  if (!token) { window.location.href = 'member-login.html?redirect=' + encodeURIComponent(window.location.href); return; }
+
+  const section = document.getElementById('interestSection');
+  section.innerHTML = '<div style="text-align:center;font-size:0.82rem;color:rgba(255,255,255,0.7);padding:8px;">Sending...</div>';
+
+  try {
+    const res = await fetch(API + '/api/interests/send', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ receiver_profile_id: profileId })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      if (data.is_match) {
+        section.innerHTML = `<div style="background:rgba(255,255,255,0.15);border-radius:10px;padding:10px;text-align:center;font-size:0.82rem;color:var(--gold-light);font-weight:700;">💞 It's a Match! <a href="my-interests.html" style="color:#fff;text-decoration:underline;">View Now</a></div>`;
+      } else {
+        section.innerHTML = `<div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:10px;text-align:center;font-size:0.82rem;color:rgba(255,255,255,0.85);">⏳ Interest Sent! <a href="my-interests.html" style="color:var(--gold-light);">View in My Interests</a></div>`;
+      }
+    } else {
+      section.innerHTML = `<div style="background:rgba(255,0,0,0.2);border-radius:10px;padding:10px;text-align:center;font-size:0.78rem;color:#ffb3b3;">${data.error || 'Could not send. Please try again.'}</div>`;
+    }
+  } catch(e) {
+    section.innerHTML = '<div style="color:rgba(255,255,255,0.5);font-size:0.78rem;text-align:center;padding:8px;">Connection error. Please try again.</div>';
+  }
 }
 
 loadProfile();
