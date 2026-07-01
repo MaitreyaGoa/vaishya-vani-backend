@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin-login.html
+Disallow: /admin-dashboard.html
+Disallow: /admin-setup.html
+Disallow: /my-interests.html
+Disallow: /member-login.html
+
+Sitemap: https://vaishyavaniparivar.com/sitemap.xml
