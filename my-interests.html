@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Interests — VaishyaVaniParivar.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--gold:#c9922a;--gold-light:#e8c46a;--gold-pale:#f5e6b8;--cream:#faf5eb;--ink:#1a0e09;--ink-soft:#5c4033;--line:rgba(201,146,42,0.2);--green:#1f5c35;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);color:var(--ink);}
+nav{background:var(--maroon-deep);padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;}
+.nav-brand{font-family:'Playfair Display',serif;font-size:1rem;color:var(--gold-light);text-decoration:none;}
+.nav-user{font-size:0.82rem;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:14px;}
+.nav-user a{color:var(--gold-light);text-decoration:none;font-weight:600;}
+.logout-btn{background:rgba(255,255,255,0.1);border:none;color:rgba(255,255,255,0.7);padding:6px 14px;border-radius:999px;font-size:0.78rem;cursor:pointer;}
+.logout-btn:hover{background:rgba(255,255,255,0.18);color:#fff;}
+
+.page-head{background:linear-gradient(135deg,var(--maroon-deep),var(--maroon));padding:36px 28px;color:#fff;}
+.page-head h1{font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:4px;}
+.page-head p{font-size:0.85rem;opacity:0.75;}
+
+.tabs{display:flex;gap:4px;padding:16px 28px 0;background:var(--maroon-deep);border-top:1px solid rgba(255,255,255,0.08);}
+.tab{padding:10px 20px;border-radius:10px 10px 0 0;font-size:0.82rem;font-weight:600;cursor:pointer;color:rgba(255,255,255,0.6);border:none;background:transparent;transition:all 0.15s;}
+.tab.active{background:var(--cream);color:var(--maroon-deep);}
+.tab .badge{background:var(--gold);color:#fff;font-size:0.65rem;padding:2px 7px;border-radius:999px;margin-left:6px;}
+
+.main{max-width:900px;margin:0 auto;padding:24px 20px 60px;}
+.section-note{font-size:0.82rem;color:var(--ink-soft);margin-bottom:18px;}
+
+.profile-row{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;display:flex;gap:14px;align-items:center;margin-bottom:12px;transition:box-shadow 0.15s;}
+.profile-row:hover{box-shadow:0 6px 16px rgba(0,0,0,0.06);}
+.profile-row img{width:60px;height:70px;border-radius:10px;object-fit:cover;object-position:top;background:var(--cream);flex-shrink:0;}
+.profile-row .photo-placeholder{width:60px;height:70px;border-radius:10px;background:#fdf0f0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;}
+.profile-row .info{flex:1;}
+.profile-row .pid{font-size:0.68rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);text-transform:uppercase;}
+.profile-row .name{font-size:0.95rem;font-weight:700;color:var(--maroon-deep);margin:2px 0;}
+.profile-row .detail{font-size:0.78rem;color:var(--ink-soft);}
+.profile-row .actions{display:flex;gap:8px;flex-shrink:0;flex-wrap:wrap;}
+.status-badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;}
+.badge-pending{background:#fff3cd;color:#8a5700;}
+.badge-accepted{background:#e3f5e6;color:var(--green);}
+.badge-declined{background:#fbe4e4;color:#a32020;}
+.badge-match{background:linear-gradient(135deg,var(--maroon),var(--gold));color:#fff;}
+.btn{border:none;border-radius:999px;padding:8px 16px;font-size:0.75rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all 0.15s;display:inline-block;}
+.btn-accept{background:#e3f5e6;color:var(--green);}
+.btn-accept:hover{background:#c8eacc;}
+.btn-decline{background:#fbe4e4;color:#a32020;}
+.btn-decline:hover{background:#f5c6c6;}
+.btn-view{background:var(--cream);color:var(--maroon-deep);border:1px solid var(--line);}
+.btn-view:hover{background:var(--gold-pale);}
+.btn-wa{background:#25D366;color:#fff;}
+.btn-wa:hover{background:#1ebc59;}
+
+.match-card{background:linear-gradient(145deg,#fff9f0 0%,#fff 100%);border:2px solid rgba(201,146,42,0.3);border-radius:16px;padding:18px;display:flex;gap:16px;align-items:center;margin-bottom:14px;position:relative;}
+.match-card::before{content:'💞';position:absolute;top:12px;right:16px;font-size:1.2rem;}
+.contact-chip{background:var(--gold-pale);color:#6b4e00;padding:6px 14px;border-radius:999px;font-size:0.78rem;font-weight:600;margin-top:8px;display:inline-block;}
+
+.empty{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+.empty .icon{font-size:2.5rem;margin-bottom:12px;}
+.empty h3{font-family:'Playfair Display',serif;color:var(--maroon-deep);margin-bottom:6px;}
+.empty p{font-size:0.85rem;line-height:1.6;}
+.empty a{color:var(--maroon);font-weight:600;text-decoration:none;}
+.loading{text-align:center;padding:50px 20px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">VaishyaVaniParivar.com</a>
+  <div class="nav-user">
+    <span id="navName"></span>
+    <a href="matrimony.html">Browse Profiles</a>
+    <button class="logout-btn" onclick="logout()">Log Out</button>
+  </div>
+</nav>
+
+<div class="page-head">
+  <h1>My Interests & Matches</h1>
+  <p>Manage your sent and received interests, and view your matches.</p>
+</div>
+
+<div style="background:var(--maroon-deep);">
+  <div class="tabs">
+    <button class="tab active" data-tab="matches" onclick="showTab('matches')">💞 Matches <span class="badge" id="matchCount">—</span></button>
+    <button class="tab" data-tab="received" onclick="showTab('received')">📥 Received <span class="badge" id="receivedCount">—</span></button>
+    <button class="tab" data-tab="sent" onclick="showTab('sent')">📤 Sent <span class="badge" id="sentCount">—</span></button>
+  </div>
+</div>
+
+<div class="main">
+  <div id="tabContent"><div class="loading">Loading...</div></div>
+</div>
+
+<script>
+const API = 'https://vaishya-vani-backend.onrender.com';
+const token = localStorage.getItem('vvp_member_token');
+const memberName = localStorage.getItem('vvp_member_name');
+
+if (!token) { window.location.href = 'member-login.html?redirect=my-interests.html'; }
+document.getElementById('navName').textContent = memberName || 'Member';
+
+function logout() {
+  localStorage.removeItem('vvp_member_token');
+  localStorage.removeItem('vvp_member_name');
+  localStorage.removeItem('vvp_member_profile_id');
+  window.location.href = 'member-login.html';
+}
+
+async function apiFetch(path) {
+  const res = await fetch(API + path, { headers: { 'Authorization': 'Bearer ' + token } });
+  if (res.status === 401) { logout(); return null; }
+  return res.json();
+}
+
+function profileId(id) { return 'VVP-' + String(id).padStart(4, '0'); }
+function genderEmoji(g) { return g === 'Female' ? '👰' : g === 'Male' ? '🤵' : '👤'; }
+
+function photoHtml(p, size = '60px') {
+  return p.profile_photo_url
+    ? `<img src="${p.profile_photo_url}" alt="" style="width:${size};height:calc(${size} * 1.2);border-radius:10px;object-fit:cover;object-position:top;flex-shrink:0;" onerror="this.style.display='none'">`
+    : `<div style="width:${size};height:calc(${size} * 1.2);border-radius:10px;background:#fdf0f0;display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0;">${genderEmoji(p.gender)}</div>`;
+}
+
+let currentTab = 'matches';
+function showTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
+  loadTab(tab);
+}
+
+async function loadTab(tab) {
+  document.getElementById('tabContent').innerHTML = '<div class="loading">Loading...</div>';
+  if (tab === 'matches') await loadMatches();
+  else if (tab === 'received') await loadReceived();
+  else if (tab === 'sent') await loadSent();
+}
+
+async function loadMatches() {
+  const data = await apiFetch('/api/interests/matches');
+  document.getElementById('matchCount').textContent = data ? data.length : '0';
+  if (!data || !data.length) {
+    document.getElementById('tabContent').innerHTML = `
+      <div class="empty">
+        <div class="icon">💞</div>
+        <h3>No matches yet</h3>
+        <p>When you and another member mutually accept each other's interest, it becomes a match.<br>
+        <a href="matrimony.html">Browse profiles →</a></p>
+      </div>`;
+    return;
+  }
+  document.getElementById('tabContent').innerHTML = `
+    <p class="section-note">You have ${data.length} mutual match${data.length > 1 ? 'es' : ''}! Contact details are shown for matched profiles.</p>
+    ${data.map(p => `
+      <div class="match-card">
+        ${photoHtml(p, '64px')}
+        <div>
+          <div class="pid" style="font-size:0.68rem;font-weight:700;letter-spacing:0.08em;color:var(--gold);text-transform:uppercase;">${profileId(p.profile_id)}</div>
+          <div style="font-size:0.95rem;font-weight:700;color:var(--maroon-deep);margin:2px 0;">${genderEmoji(p.gender)} ${p.age} yrs · ${p.education || '—'}</div>
+          <div style="font-size:0.78rem;color:var(--ink-soft);">${p.profession || ''} · Native: ${p.native_place || '—'}</div>
+          ${p.family_contact
+            ? `<div class="contact-chip">📞 ${p.family_contact}</div>
+               <a class="btn btn-wa" href="https://wa.me/91${p.family_contact.replace(/\D/g,'')}?text=${encodeURIComponent('Hello, we connected on VaishyaVaniParivar.com (Profile '+profileId(p.profile_id)+').')}" target="_blank" style="margin-left:8px;margin-top:8px;">💬 WhatsApp</a>`
+            : '<div class="contact-chip">📞 Contact details not yet shared by this family</div>'
+          }
+        </div>
+        <a class="btn btn-view" href="matrimony-detail.html?id=${p.profile_id}" style="margin-left:auto;align-self:flex-start;">View Profile</a>
+      </div>`).join('')}`;
+}
+
+async function loadReceived() {
+  const data = await apiFetch('/api/interests/received');
+  document.getElementById('receivedCount').textContent = data ? data.length : '0';
+  const pending = data ? data.filter(i => i.status === 'pending') : [];
+  if (!data || !data.length) {
+    document.getElementById('tabContent').innerHTML = `<div class="empty"><div class="icon">📥</div><h3>No interests received yet</h3><p>Share your profile to receive interests from families.</p></div>`;
+    return;
+  }
+  document.getElementById('tabContent').innerHTML = `
+    <p class="section-note">${pending.length} pending interest${pending.length !== 1 ? 's' : ''} awaiting your response.</p>
+    ${data.map(i => `
+      <div class="profile-row">
+        ${photoHtml(i)}
+        <div class="info">
+          <div class="pid">${profileId(i.profile_id)}</div>
+          <div class="name">${genderEmoji(i.gender)} ${i.age} yrs · ${i.education || '—'}</div>
+          <div class="detail">${i.profession || ''} · Native: ${i.native_place || '—'}</div>
+          ${i.message ? `<div style="font-size:0.78rem;color:var(--maroon-deep);margin-top:6px;font-style:italic;">"${i.message}"</div>` : ''}
+        </div>
+        <div class="actions">
+          <span class="status-badge badge-${i.status}">${i.status}</span>
+          ${i.status === 'pending' ? `
+            <button class="btn btn-accept" onclick="respond(${i.id},'accepted')">✓ Accept</button>
+            <button class="btn btn-decline" onclick="respond(${i.id},'declined')">✗ Decline</button>` : ''}
+          <a class="btn btn-view" href="matrimony-detail.html?id=${i.profile_id}">View</a>
+        </div>
+      </div>`).join('')}`;
+}
+
+async function loadSent() {
+  const data = await apiFetch('/api/interests/sent');
+  document.getElementById('sentCount').textContent = data ? data.length : '0';
+  if (!data || !data.length) {
+    document.getElementById('tabContent').innerHTML = `<div class="empty"><div class="icon">📤</div><h3>You haven't sent any interests yet</h3><p><a href="matrimony.html">Browse profiles →</a></p></div>`;
+    return;
+  }
+  document.getElementById('tabContent').innerHTML = `
+    <p class="section-note">${data.length} interest${data.length > 1 ? 's' : ''} sent.</p>
+    ${data.map(i => `
+      <div class="profile-row">
+        ${photoHtml(i)}
+        <div class="info">
+          <div class="pid">${profileId(i.profile_id)}</div>
+          <div class="name">${genderEmoji(i.gender)} ${i.age} yrs · ${i.education || '—'}</div>
+          <div class="detail">${i.profession || ''} · Native: ${i.native_place || '—'}</div>
+          ${i.message ? `<div style="font-size:0.78rem;font-style:italic;margin-top:5px;color:var(--ink-soft);">"${i.message}"</div>` : ''}
+        </div>
+        <div class="actions">
+          <span class="status-badge badge-${i.status}">${i.status}</span>
+          <a class="btn btn-view" href="matrimony-detail.html?id=${i.profile_id}">View</a>
+        </div>
+      </div>`).join('')}`;
+}
+
+async function respond(interestId, action) {
+  const res = await fetch(API + '/api/interests/' + interestId + '/respond', {
+    method: 'POST',
+    headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ action })
+  });
+  if (res.ok) {
+    if (action === 'accepted') {
+      alert('✓ Interest accepted! If they also accept yours, it becomes a match.');
+    }
+    loadTab('received');
+  }
+}
+
+// Load all tabs counts
+async function init() {
+  const [matches, received, sent] = await Promise.all([
+    apiFetch('/api/interests/matches'),
+    apiFetch('/api/interests/received'),
+    apiFetch('/api/interests/sent')
+  ]);
+  document.getElementById('matchCount').textContent = matches?.length || '0';
+  document.getElementById('receivedCount').textContent = received?.length || '0';
+  document.getElementById('sentCount').textContent = sent?.length || '0';
+  loadTab('matches');
+}
+
+init();
+</script>
+</body>
+</html>

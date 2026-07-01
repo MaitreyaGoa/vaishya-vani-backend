@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Member Login — VaishyaVaniParivar.com</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#6d1a26;--maroon-deep:#3d0d14;--gold:#c9922a;--gold-light:#e8c46a;--cream:#faf5eb;--line:rgba(201,146,42,0.2);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--cream);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+.card{background:#fff;border-radius:20px;width:100%;max-width:400px;overflow:hidden;box-shadow:0 16px 48px rgba(0,0,0,0.1);border:1px solid var(--line);}
+.card-top{background:linear-gradient(135deg,var(--maroon-deep),var(--maroon));padding:28px 28px 24px;text-align:center;color:#fff;}
+.card-top h1{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:700;margin-bottom:4px;}
+.card-top p{font-size:0.82rem;opacity:0.75;}
+.card-body{padding:28px;}
+label{display:block;font-size:0.78rem;font-weight:600;color:#5c4033;margin:14px 0 5px;}
+input{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:10px;font-size:0.92rem;font-family:inherit;background:#fffdf9;}
+input:focus{outline:none;border-color:var(--maroon);}
+.btn{width:100%;margin-top:20px;background:var(--maroon);color:#fff;border:none;border-radius:10px;padding:13px;font-weight:700;font-size:0.95rem;cursor:pointer;transition:background 0.15s;}
+.btn:hover{background:var(--maroon-deep);}
+.btn:disabled{opacity:0.6;cursor:not-allowed;}
+.msg{text-align:center;margin-top:14px;font-size:0.85rem;padding:10px 14px;border-radius:8px;display:none;}
+.msg.error{color:#a32020;background:#fbe4e4;display:block;}
+.msg.success{color:#1f5c35;background:#e3f5e6;display:block;}
+.footer-links{text-align:center;margin-top:18px;font-size:0.82rem;color:#7a695c;}
+.footer-links a{color:var(--maroon);font-weight:600;text-decoration:none;}
+.divider{display:flex;align-items:center;gap:12px;margin:18px 0 0;color:#b0a090;font-size:0.75rem;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--line);}
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="card-top">
+      <h1>Member Login</h1>
+      <p>VaishyaVaniParivar.com</p>
+    </div>
+    <div class="card-body">
+      <form id="loginForm">
+        <label>Mobile Number</label>
+        <input type="tel" id="mobile" placeholder="Your registered mobile number" required>
+        <label>Password</label>
+        <input type="password" id="password" placeholder="Your password" required>
+        <button type="submit" class="btn" id="submitBtn">Log In</button>
+        <div class="msg" id="msg"></div>
+      </form>
+      <div class="divider">New to the community?</div>
+      <div class="footer-links" style="margin-top:12px;">
+        <a href="register.html">Register Free →</a>
+      </div>
+      <div class="footer-links" style="margin-top:10px;">
+        <a href="index.html">← Back to Homepage</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+const API = 'https://vaishya-vani-backend.onrender.com';
+
+// If already logged in, redirect
+const existing = localStorage.getItem('vvp_member_token');
+if (existing) {
+  const redirectTo = new URLSearchParams(window.location.search).get('redirect') || 'my-interests.html';
+  window.location.href = redirectTo;
+}
+
+document.getElementById('loginForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submitBtn');
+  const msg = document.getElementById('msg');
+  btn.disabled = true;
+  btn.textContent = 'Logging in...';
+  msg.style.display = 'none';
+
+  try {
+    const res = await fetch(API + '/api/member/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        mobile_number: document.getElementById('mobile').value.trim(),
+        password: document.getElementById('password').value
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      localStorage.setItem('vvp_member_token', data.token);
+      localStorage.setItem('vvp_member_name', data.user.full_name);
+      localStorage.setItem('vvp_member_profile_id', data.user.matrimony_profile_id || '');
+      const redirectTo = new URLSearchParams(window.location.search).get('redirect') || 'my-interests.html';
+      window.location.href = redirectTo;
+    } else {
+      msg.className = 'msg error';
+      msg.textContent = data.error || 'Login failed. Please try again.';
+    }
+  } catch(e) {
+    msg.className = 'msg error';
+    msg.textContent = 'Could not reach the server. Please try again.';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Log In';
+  }
+});
+</script>
+</body>
+</html>
