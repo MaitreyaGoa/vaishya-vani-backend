@@ -46,7 +46,8 @@ router.get('/listings/:id', async (req, res) => {
 // CREATE listing (with optional image upload)
 router.post('/listings', singleImage, async (req, res) => {
   try {
-    const { type, title, description, meta_line, approval_status } = req.body;
+    const { type, title, description, meta_line, approval_status,
+            event_date, location, external_link, featured } = req.body;
     if (!type || !title) return res.status(400).json({ error: 'type and title are required.' });
 
     let image_url = req.body.image_url || null;
@@ -56,10 +57,14 @@ router.post('/listings', singleImage, async (req, res) => {
     }
 
     const result = await pool.query(
-      `INSERT INTO community_listings (type, title, description, image_url, meta_line, approval_status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
+      `INSERT INTO community_listings
+        (type, title, description, image_url, meta_line, approval_status, created_by,
+         event_date, location, external_link, featured)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) RETURNING *`,
       [type, title, description || null, image_url, meta_line || null,
-       approval_status || 'approved', req.admin.id]
+       approval_status || 'approved', req.admin.id,
+       event_date || null, location || null, external_link || null,
+       featured === 'true' || featured === true]
     );
     res.status(201).json(result.rows[0]);
   } catch (err) { res.status(500).json({ error: err.message }); }
@@ -68,7 +73,8 @@ router.post('/listings', singleImage, async (req, res) => {
 // UPDATE listing
 router.put('/listings/:id', singleImage, async (req, res) => {
   try {
-    const { title, description, meta_line, approval_status } = req.body;
+    const { title, description, meta_line, approval_status,
+            event_date, location, external_link, featured } = req.body;
     let image_url = req.body.image_url || null;
     if (req.file) {
       const uploaded = await uploadToCloudinary(req.file.buffer, 'listings/updated');
@@ -81,15 +87,19 @@ router.put('/listings/:id', singleImage, async (req, res) => {
 
     const result = await pool.query(
       `UPDATE community_listings SET
-        title = $1, description = $2, meta_line = $3,
-        approval_status = $4, image_url = $5, updated_at = NOW()
-       WHERE id = $6 RETURNING *`,
+        title=$1, description=$2, meta_line=$3, approval_status=$4, image_url=$5,
+        event_date=$6, location=$7, external_link=$8, featured=$9, updated_at=NOW()
+       WHERE id=$10 RETURNING *`,
       [
         title || cur.title,
         description !== undefined ? description : cur.description,
         meta_line !== undefined ? meta_line : cur.meta_line,
         approval_status || cur.approval_status,
         image_url || cur.image_url,
+        event_date !== undefined ? (event_date || null) : cur.event_date,
+        location !== undefined ? location : cur.location,
+        external_link !== undefined ? external_link : cur.external_link,
+        featured !== undefined ? (featured === 'true' || featured === true) : cur.featured,
         req.params.id
       ]
     );
