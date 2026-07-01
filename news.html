@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>News — VaishyaVaniParivar.com</title>
+<title>Community News — VaishyaVaniParivar.com</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -51,7 +51,40 @@ nav{position:sticky;top:0;z-index:50;background:rgba(250,245,235,0.92);backdrop-
 .loading{text-align:center;padding:60px 20px;color:var(--ink-soft);}
 footer{background:var(--maroon-deep);color:rgba(250,245,235,0.65);text-align:center;padding:28px;font-size:0.78rem;}
 footer a{color:var(--gold-light);text-decoration:none;}
+
+  /* ── PHASE 8 MOBILE FIXES ── */
+  @media (max-width: 480px) {
+    body { font-size: 15px; }
+    nav { padding: 0 14px !important; }
+    .nav-right a:not(.nav-cta) { display: none; }
+    .page-hero { padding: 36px 16px !important; }
+    .page-hero h1 { font-size: 1.6rem !important; }
+    .main-layout, .main { padding-left: 14px !important; padding-right: 14px !important; }
+    .stat-row { grid-template-columns: 1fr 1fr !important; }
+  }
 </style>
+
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Latest news, announcements and success stories from the Vaishya Vani Samaj community.">
+  <meta name="keywords" content="Vaishya Vani, Vaishya Vani Samaj, Vaishya Vani Parivar, community, matrimony, business, Goa, Maharashtra, Karnataka, Kerala">
+  <meta name="author" content="VaishyaVaniParivar.com">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vaishyavaniparivar.com/news.html">
+
+  <!-- Open Graph (Facebook, WhatsApp) -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Community News — VaishyaVaniParivar.com">
+  <meta property="og:description" content="Latest news, announcements and success stories from the Vaishya Vani Samaj community.">
+  <meta property="og:url" content="https://vaishyavaniparivar.com/news.html">
+  <meta property="og:image" content="https://vaishyavaniparivar.com/logo.jpeg">
+  <meta property="og:site_name" content="VaishyaVaniParivar.com">
+  <meta property="og:locale" content="en_IN">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Community News — VaishyaVaniParivar.com">
+  <meta name="twitter:description" content="Latest news, announcements and success stories from the Vaishya Vani Samaj community.">
+  <meta name="twitter:image" content="https://vaishyavaniparivar.com/logo.jpeg">
 </head>
 <body>
 
@@ -77,6 +110,7 @@ footer a{color:var(--gold-light);text-decoration:none;}
 
 <footer>
   <a href="index.html">VaishyaVaniParivar.com</a>
+ · <a href="privacy.html" style="color:inherit;">Privacy</a> · <a href="terms.html" style="color:inherit;">Terms</a>
 </footer>
 
 <script>
