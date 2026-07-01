@@ -64,6 +64,14 @@ app.use('/api/admin', adminApprovalsRouter);
 const adminContentRouter = require('./routes/adminContent');
 app.use('/api/admin', adminContentRouter);
 
+// Admin taluka management + registration stats
+const adminTalukaStatsRouter = require('./routes/adminTalukaStats');
+app.use('/api/admin', adminTalukaStatsRouter);
+
+// Business Hub public routes
+const businessRouter = require('./routes/business');
+app.use('/api', businessRouter);
+
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`🚀 Server running on http://localhost:${PORT}`);
